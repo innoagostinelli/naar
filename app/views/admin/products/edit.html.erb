@@ -1,23 +1,24 @@
 <% content_for :page_title, @product.name %>
 <% content_for :topbar_actions do %>
-  <%= link_to "Nuevo producto", new_admin_product_path, class: "btn-admin-ghost" %>
+  <%= link_to new_admin_product_path, class: "btn btn-outline-secondary btn-sm" do %>
+    + Nuevo producto
+  <% end %>
 <% end %>
 
-<div class="admin-card">
-  <h2>Datos del producto</h2>
-  <%= render "form", product: @product %>
-</div>
+<%= render "form", product: @product %>
 
-<div class="admin-card">
-  <h2>Variantes
-    <small class="text-muted" style="font-size:.8rem; font-weight:400;">
-      (<%= @product.variants.count %> variantes)
-    </small>
-  </h2>
+<div class="card mt-2">
+  <div class="card-header d-flex align-items-center justify-content-between">
+    <h3 class="card-title">Variantes <span class="text-muted fw-normal fs-6">(<%= @product.variants.count %>)</span></h3>
+    <%= link_to new_admin_product_variant_path(@product), class: "btn btn-sm btn-naar" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Agregar variante
+    <% end %>
+  </div>
 
   <% if @product.variants.any? %>
-    <div class="admin-table-wrap mb-3">
-      <table class="admin-table">
+    <div class="table-responsive">
+      <table class="table table-vcenter table-hover card-table">
         <thead>
           <tr>
             <th>Color</th>
@@ -31,20 +32,32 @@
           <% @product.variants.order(:color_name, :size).each do |v| %>
             <tr>
               <td>
-                <span class="color-preview" style="background:<%= v.color_hex %>;"></span>
-                <%= v.color_name %>
-                <span class="text-muted" style="font-size:.75rem;"><%= v.color_hex %></span>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="color-dot" style="background:<%= v.color_hex %>;"></span>
+                  <div>
+                    <div class="fw-semibold"><%= v.color_name %></div>
+                    <div class="text-muted" style="font-size:.74rem;"><%= v.color_hex %></div>
+                  </div>
+                </div>
               </td>
-              <td><%= v.size %></td>
-              <td><%= v.sku.presence || "—" %></td>
-              <td><%= v.stock.nil? ? "Sin control" : v.stock %></td>
+              <td><span class="badge bg-light text-dark"><%= v.size %></span></td>
+              <td class="text-muted"><%= v.sku.presence || "—" %></td>
               <td>
-                <div class="admin-actions">
-                  <%= link_to "Editar", edit_admin_product_variant_path(@product, v), class: "btn-admin-ghost" %>
+                <% if v.stock.nil? %>
+                  <span class="text-muted">Sin control</span>
+                <% elsif v.stock == 0 %>
+                  <span class="text-danger fw-semibold">Agotado</span>
+                <% else %>
+                  <%= v.stock %>
+                <% end %>
+              </td>
+              <td>
+                <div class="admin-actions justify-content-end">
+                  <%= link_to "Editar", edit_admin_product_variant_path(@product, v), class: "btn btn-sm btn-ghost" %>
                   <%= button_to "Eliminar", admin_product_variant_path(@product, v),
                         method: :delete,
                         form: { data: { turbo_confirm: "¿Eliminar variante #{v.display_name}?" } },
-                        class: "btn-admin-danger" %>
+                        class: "btn btn-sm btn-danger-ghost" %>
                 </div>
               </td>
             </tr>
@@ -52,7 +65,11 @@
         </tbody>
       </table>
     </div>
+  <% else %>
+    <div class="card-body text-center text-muted py-5">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mb-2 opacity-50"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p class="mb-3">Este producto no tiene variantes aún.</p>
+      <%= link_to "+ Agregar primera variante", new_admin_product_variant_path(@product), class: "btn btn-naar btn-sm" %>
+    </div>
   <% end %>
-
-  <%= link_to "+ Agregar variante", new_admin_product_variant_path(@product), class: "btn-admin-ghost" %>
 </div>

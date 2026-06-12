@@ -1,33 +1,38 @@
 <% content_for :page_title, "FAQs" %>
 <% content_for :topbar_actions do %>
-  <%= link_to "Nueva FAQ", new_admin_faq_path, class: "btn-admin-primary" %>
+  <%= link_to new_admin_faq_path, class: "btn btn-naar" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Nueva FAQ
+  <% end %>
 <% end %>
 
-<div class="admin-table-wrap">
-  <table class="admin-table">
-    <thead>
-      <tr>
-        <th>Pos.</th>
-        <th>Pregunta</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @faqs.each do |faq| %>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-vcenter table-hover card-table">
+      <thead>
         <tr>
-          <td><%= faq.position %></td>
-          <td><%= faq.question %></td>
-          <td>
-            <div class="admin-actions">
-              <%= link_to "Editar", edit_admin_faq_path(faq), class: "btn-admin-ghost" %>
-              <%= button_to "Eliminar", admin_faq_path(faq),
-                    method: :delete,
-                    form: { data: { turbo_confirm: "¿Eliminar esta FAQ?" } },
-                    class: "btn-admin-danger" %>
-            </div>
-          </td>
+          <th class="w-1 text-center">Pos.</th>
+          <th>Pregunta</th>
+          <th></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @faqs.each do |faq| %>
+          <tr>
+            <td class="text-center text-muted"><%= faq.position %></td>
+            <td class="fw-semibold"><%= faq.question %></td>
+            <td>
+              <div class="admin-actions justify-content-end">
+                <%= link_to "Editar", edit_admin_faq_path(faq), class: "btn btn-sm btn-ghost" %>
+                <%= button_to "Eliminar", admin_faq_path(faq),
+                      method: :delete,
+                      form: { data: { turbo_confirm: "¿Eliminar esta FAQ?" } },
+                      class: "btn btn-sm btn-danger-ghost" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
