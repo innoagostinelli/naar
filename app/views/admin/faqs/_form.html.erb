@@ -1,0 +1,29 @@
+<%= form_with model: [:admin, faq], class: "admin-form" do |f| %>
+  <% if faq.errors.any? %>
+    <div class="alert alert-danger mb-3">
+      <ul class="mb-0">
+        <% faq.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row g-3">
+    <div class="col-12">
+      <%= f.label :question, "Pregunta", class: "form-label" %>
+      <%= f.text_field :question, class: "form-control" %>
+    </div>
+    <div class="col-12">
+      <%= f.label :answer, "Respuesta", class: "form-label" %>
+      <%= f.text_area :answer, rows: 4, class: "form-control" %>
+    </div>
+    <div class="col-md-2">
+      <%= f.label :position, "Posición", class: "form-label" %>
+      <%= f.number_field :position, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="mt-4 d-flex gap-2">
+    <%= f.submit faq.new_record? ? "Crear FAQ" : "Guardar cambios", class: "btn-admin-primary" %>
+    <%= link_to "Cancelar", admin_faqs_path, class: "btn-admin-ghost" %>
+  </div>
+<% end %>

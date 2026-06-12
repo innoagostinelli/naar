@@ -1,0 +1,41 @@
+<% content_for :page_title, "Productos" %>
+<% content_for :topbar_actions do %>
+  <%= link_to "Nuevo producto", new_admin_product_path, class: "btn-admin-primary" %>
+<% end %>
+
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Precio</th>
+        <th>Flag</th>
+        <th>Estado</th>
+        <th>Pos.</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td><strong><%= product.name %></strong></td>
+          <td><%= product.category.name %></td>
+          <td>$<%= number_with_delimiter(product.price.to_i) %></td>
+          <td><span class="badge-flag flag-<%= product.flag %>"><%= product.flag %></span></td>
+          <td><span class="badge-status status-<%= product.status %>"><%= product.status %></span></td>
+          <td><%= product.position %></td>
+          <td>
+            <div class="admin-actions">
+              <%= link_to "Editar", edit_admin_product_path(product), class: "btn-admin-ghost" %>
+              <%= button_to "Eliminar", admin_product_path(product),
+                    method: :delete,
+                    form: { data: { turbo_confirm: "¿Eliminar #{product.name}? Esta acción no se puede deshacer." } },
+                    class: "btn-admin-danger" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

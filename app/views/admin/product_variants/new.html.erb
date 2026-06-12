@@ -1,0 +1,6 @@
+<% content_for :page_title, "Nueva variante — #{@product.name}" %>
+
+<div class="admin-card">
+  <h2>Nueva variante</h2>
+  <%= render "form", product: @product, variant: @variant %>
+</div>

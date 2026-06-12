@@ -1,0 +1,58 @@
+<% content_for :page_title, @product.name %>
+<% content_for :topbar_actions do %>
+  <%= link_to "Nuevo producto", new_admin_product_path, class: "btn-admin-ghost" %>
+<% end %>
+
+<div class="admin-card">
+  <h2>Datos del producto</h2>
+  <%= render "form", product: @product %>
+</div>
+
+<div class="admin-card">
+  <h2>Variantes
+    <small class="text-muted" style="font-size:.8rem; font-weight:400;">
+      (<%= @product.variants.count %> variantes)
+    </small>
+  </h2>
+
+  <% if @product.variants.any? %>
+    <div class="admin-table-wrap mb-3">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Color</th>
+            <th>Talla</th>
+            <th>SKU</th>
+            <th>Stock</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @product.variants.order(:color_name, :size).each do |v| %>
+            <tr>
+              <td>
+                <span class="color-preview" style="background:<%= v.color_hex %>;"></span>
+                <%= v.color_name %>
+                <span class="text-muted" style="font-size:.75rem;"><%= v.color_hex %></span>
+              </td>
+              <td><%= v.size %></td>
+              <td><%= v.sku.presence || "—" %></td>
+              <td><%= v.stock.nil? ? "Sin control" : v.stock %></td>
+              <td>
+                <div class="admin-actions">
+                  <%= link_to "Editar", edit_admin_product_variant_path(@product, v), class: "btn-admin-ghost" %>
+                  <%= button_to "Eliminar", admin_product_variant_path(@product, v),
+                        method: :delete,
+                        form: { data: { turbo_confirm: "¿Eliminar variante #{v.display_name}?" } },
+                        class: "btn-admin-danger" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+
+  <%= link_to "+ Agregar variante", new_admin_product_variant_path(@product), class: "btn-admin-ghost" %>
+</div>
