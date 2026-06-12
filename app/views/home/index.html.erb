@@ -47,7 +47,9 @@
   </div>
 </div>
 
-<%# ── Categorías ──────────────────────────────────────────────── %>
+<%# ── Categorías + Catálogo (filtro dinámico) ─────────────────── %>
+<div data-controller="category-filter">
+
 <section class="section shell" id="cats">
   <div class="section-head">
     <div>
@@ -57,27 +59,35 @@
   </div>
 
   <div class="cats">
-    <a href="#nuevos" class="cat-tile is-active">
+    <button type="button" class="cat-tile is-active"
+            data-category-filter-target="tile"
+            data-slug="all"
+            data-action="click->category-filter#filter">
       <div class="cat-img">✦</div>
       <span class="cat-name">Todo</span>
-    </a>
+    </button>
     <% @categories.each do |cat| %>
-      <a href="#cat-section-<%= cat.slug %>" class="cat-tile">
+      <button type="button" class="cat-tile"
+              data-category-filter-target="tile"
+              data-slug="<%= cat.slug %>"
+              data-action="click->category-filter#filter">
         <div class="cat-img" style="background:var(--lemon-pale);"></div>
         <span class="cat-name"><%= cat.name %></span>
-      </a>
+      </button>
     <% end %>
   </div>
 </section>
 
 <%# ── Nuevos ingresos ─────────────────────────────────────────── %>
-<section class="section shell" id="nuevos">
+<section class="section shell" id="nuevos"
+         data-category-filter-target="section"
+         data-category="nuevos">
   <div class="section-head">
     <div>
       <span class="section-eyebrow">Recién llegado · Mayo 2026</span>
       <h2 class="section-title">Lo nuevo en Naar.</h2>
     </div>
-    <button class="see-all">
+    <button class="see-all" type="button">
       Ver más
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
     </button>
@@ -95,12 +105,14 @@
   <% items = cat.products.active.order(:position).limit(4) %>
   <% next if items.empty? %>
 
-  <section class="section shell" id="cat-section-<%= cat.slug %>">
+  <section class="section shell" id="cat-section-<%= cat.slug %>"
+           data-category-filter-target="section"
+           data-category="<%= cat.slug %>">
     <div class="section-head">
       <div>
         <h2 class="section-title"><%= cat.name %></h2>
       </div>
-      <button class="see-all">
+      <button class="see-all" type="button">
         Ver todo
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
       </button>
@@ -112,6 +124,8 @@
     </div>
   </section>
 <% end %>
+
+</div><%# /category-filter %>
 
 <%# ── FAQ ────────────────────────────────────────────────────── %>
 <section class="section shell" id="faqs" style="padding-bottom:56px;">
