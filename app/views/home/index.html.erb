@@ -1,2 +1,244 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<%# ── Hero ──────────────────────────────────────────────────────── %>
+<section class="hero shell">
+  <div class="hero-head">
+    <div>
+      <span class="section-eyebrow">Curated pieces for every version of you</span>
+      <h1 class="hero-headline">Tu próximo outfit favorito.</h1>
+    </div>
+    <p class="hero-sub">
+      Mira lo nuevo, explora por categoría y encuentra el tuyo.
+    </p>
+  </div>
+
+  <div class="reel-row">
+    <div class="reel">
+      <div class="reel-placeholder" style="background: linear-gradient(160deg, #e8c8d8 0%, #c87da8 100%);"></div>
+      <span class="reel-tag">Lookbook</span>
+      <div class="reel-label">
+        <span>Pijama set rayas</span>
+        <span class="arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <div class="reel">
+      <div class="reel-placeholder" style="background: linear-gradient(160deg, #f5e88a 0%, #e0c830 100%);"></div>
+      <span class="reel-tag">Try-on</span>
+      <div class="reel-label">
+        <span>Top encaje Inés</span>
+        <span class="arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <div class="reel">
+      <div class="reel-placeholder" style="background: linear-gradient(160deg, #820045 0%, #5d0031 100%);"></div>
+      <span class="reel-tag">Unboxing</span>
+      <div class="reel-label" style="color:#f2e651;">
+        <span>Pedido naar #420</span>
+        <span class="arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# ── Delivery strip ──────────────────────────────────────────── %>
+<div class="shell">
+  <div class="delivery-strip">
+    <div class="delivery-info">
+      <div class="ic">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8zM5.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM18.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+        </svg>
+      </div>
+      <div>
+        <h3>Delivery a toda Venezuela 🇻🇪</h3>
+        <p>Mismo día en Lechería · Envíos nacionales en 24 h</p>
+      </div>
+    </div>
+    <a href="https://wa.me/message/HBW5LBXEBZ7MH1" target="_blank" rel="noopener" class="delivery-cta">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+      </svg>
+      Coordinar mi envío
+    </a>
+  </div>
+</div>
+
+<%# ── Categorías ──────────────────────────────────────────────── %>
+<section class="section shell" id="cats">
+  <div class="section-head">
+    <div>
+      <span class="section-eyebrow">Toca y filtra</span>
+      <h2 class="section-title">Por categoría</h2>
+    </div>
+  </div>
+
+  <div class="cats">
+    <a href="#nuevos" class="cat-tile is-active">
+      <div class="cat-img">✦</div>
+      <span class="cat-name">Todo</span>
+    </a>
+    <% [
+      { id: "vestidos",   name: "Vestidos"   },
+      { id: "tops",       name: "Tops"       },
+      { id: "sets",       name: "Sets"       },
+      { id: "faldas",     name: "Faldas"     },
+      { id: "pantalones", name: "Pantalones" },
+      { id: "bodys",      name: "Bodys"      },
+      { id: "sueteres",   name: "Suéteres"   },
+      { id: "rompers",    name: "Rompers"    },
+      { id: "shorts",     name: "Shorts"     },
+      { id: "chaquetas",  name: "Chaquetas"  },
+      { id: "descuentos", name: "Descuentos" },
+    ].each do |cat| %>
+      <a href="#cat-section-<%= cat[:id] %>" class="cat-tile">
+        <div class="cat-img" style="background:var(--lemon-pale);"></div>
+        <span class="cat-name"><%= cat[:name] %></span>
+      </a>
+    <% end %>
+  </div>
+</section>
+
+<%# ── Nuevos ingresos ─────────────────────────────────────────── %>
+<section class="section shell" id="nuevos">
+  <div class="section-head">
+    <div>
+      <span class="section-eyebrow">Recién llegado · Mayo 2026</span>
+      <h2 class="section-title">Lo nuevo en Naar.</h2>
+    </div>
+    <button class="see-all">
+      Ver más
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <div class="products">
+    <% [
+      { name: "Vestido midi",          price: "$55.000", old: nil,       flag: "NUEVO",  swatches: ["#211218","#820045"], bg: "#e8c8d8" },
+      { name: "Vestido midi Sol",      price: "$68.000", old: "$78.000", flag: "OFERTA", swatches: ["#F2E651","#FBF6E9"], bg: "#f5e88a" },
+      { name: "Pantalón lino Camila",  price: "$55.000", old: nil,       flag: "NUEVO",  swatches: ["#FBF6E9","#5a4751"], bg: "#f5efe6" },
+      { name: "Body satinado Lucía",   price: "$36.000", old: nil,       flag: "NUEVO",  swatches: ["#820045","#211218"], bg: "#d4a0be" },
+      { name: "Falda larga Valentina", price: "$48.000", old: nil,       flag: "NUEVO",  swatches: ["#211218","#FBF6E9"], bg: "#c8bab0" },
+      { name: "Suéter punto Andrea",   price: "$62.000", old: nil,       flag: "NUEVO",  swatches: ["#FBF6E9","#a52b6a"], bg: "#e0d0d8" },
+      { name: "Short denim Antonia",   price: "$38.000", old: "$45.000", flag: "OFERTA", swatches: ["#5a4751","#211218"], bg: "#b8a8b0" },
+      { name: "Crop top Renata",       price: "$32.000", old: nil,       flag: nil,      swatches: ["#FBF6E9","#F2E651"], bg: "#fdf9da" },
+    ].each do |p| %>
+      <%= render "shared/product_card", product: p %>
+    <% end %>
+  </div>
+</section>
+
+<%# ── Catálogo por categoría ──────────────────────────────────── %>
+<% [
+  { id: "vestidos",   name: "Vestidos",   products: [
+    { name: "Vestido lencero Aitana",  price: "$62.000", old: nil,        flag: "BESTSELLER", swatches: ["#820045","#211218"], bg: "#c87da8" },
+    { name: "Vestido midi Sol",        price: "$68.000", old: "$78.000",  flag: "OFERTA",     swatches: ["#F2E651","#FBF6E9"], bg: "#f5e88a" },
+    { name: "Vestido corto Salomé",    price: "$54.000", old: "$65.000",  flag: "OFERTA",     swatches: ["#211218"],           bg: "#c8bab0" },
+    { name: "Maxi vestido Constanza",  price: "$78.000", old: nil,        flag: "NUEVO",      swatches: ["#F2E651","#FBF6E9"], bg: "#f5e88a" },
+  ]},
+  { id: "tops", name: "Tops", products: [
+    { name: "Top off-shoulder Aurora", price: "$38.000", old: nil,  flag: nil,          swatches: ["#FBF6E9"],           bg: "#fdf9da" },
+    { name: "Blusa cuello v Daniela",  price: "$42.000", old: nil,  flag: nil,          swatches: ["#211218","#820045"], bg: "#c8bab0" },
+    { name: "Top encaje Inés",         price: "$45.000", old: nil,  flag: "BESTSELLER", swatches: ["#FBF6E9"],           bg: "#f5efe6" },
+    { name: "Camisa lino Bianca",      price: "$52.000", old: nil,  flag: nil,          swatches: ["#FBF6E9","#5a4751"], bg: "#fdf9da" },
+  ]},
+  { id: "bodys", name: "Bodys", products: [
+    { name: "Body manga larga Olivia", price: "$34.000", old: nil,       flag: nil,          swatches: ["#211218","#820045"], bg: "#c8bab0" },
+    { name: "Body strapless Camila",   price: "$36.000", old: "$42.000", flag: "OFERTA",     swatches: ["#FBF6E9"],           bg: "#fdf9da" },
+    { name: "Body encaje Isadora",     price: "$44.000", old: nil,       flag: "BESTSELLER", swatches: ["#820045","#211218"], bg: "#d4a0be" },
+    { name: "Body básico Antonella",   price: "$28.000", old: nil,       flag: nil,          swatches: ["#FBF6E9","#211218","#820045"], bg: "#f5efe6" },
+  ]},
+  { id: "sueteres", name: "Suéteres", products: [
+    { name: "Cardigan tejido Marina",  price: "$58.000", old: nil,       flag: nil,          swatches: ["#FBF6E9"],   bg: "#fdf5e6" },
+    { name: "Suéter oversized Romina", price: "$64.000", old: nil,       flag: "BESTSELLER", swatches: ["#5a4751"],   bg: "#b8a8b0" },
+    { name: "Suéter trenzado Belén",   price: "$62.000", old: "$72.000", flag: "OFERTA",     swatches: ["#a52b6a"],   bg: "#e0d0d8" },
+    { name: "Cardigan corto Luna",     price: "$54.000", old: nil,       flag: nil,          swatches: ["#F2E651","#FBF6E9"], bg: "#f5e88a" },
+  ]},
+  { id: "faldas", name: "Faldas", products: [
+    { name: "Falda plisada Emilia",    price: "$46.000", old: nil,       flag: nil,          swatches: ["#211218","#820045"], bg: "#c8bab0" },
+    { name: "Mini falda denim Sara",   price: "$38.000", old: nil,       flag: nil,          swatches: ["#5a4751"],           bg: "#b8a8b0" },
+    { name: "Maxi falda Florencia",    price: "$54.000", old: nil,       flag: "BESTSELLER", swatches: ["#FBF6E9"],           bg: "#f5efe6" },
+    { name: "Falda lápiz Adriana",     price: "$48.000", old: "$56.000", flag: "OFERTA",     swatches: ["#211218"],           bg: "#c8bab0" },
+  ]},
+  { id: "pantalones", name: "Pantalones", products: [
+    { name: "Pantalón wide leg Julia", price: "$58.000", old: nil,       flag: "BESTSELLER", swatches: ["#211218","#FBF6E9"], bg: "#c8bab0" },
+    { name: "Jean recto Lola",         price: "$62.000", old: nil,       flag: nil,          swatches: ["#5a4751"],           bg: "#b8a8b0" },
+    { name: "Pantalón cargo Renée",    price: "$56.000", old: "$65.000", flag: "OFERTA",     swatches: ["#5a4751"],           bg: "#b8a8b0" },
+    { name: "Jogger satinado Elena",   price: "$48.000", old: nil,       flag: nil,          swatches: ["#211218","#820045"], bg: "#c8bab0" },
+  ]},
+  { id: "shorts", name: "Shorts", products: [
+    { name: "Short alto Catalina",     price: "$34.000", old: nil,  flag: nil,      swatches: ["#FBF6E9","#211218"], bg: "#f5efe6" },
+    { name: "Short paperbag Mía",      price: "$38.000", old: nil,  flag: nil,      swatches: ["#5a4751"],           bg: "#b8a8b0" },
+    { name: "Short ciclista Valeria",  price: "$28.000", old: nil,  flag: "OFERTA", swatches: ["#211218"],           bg: "#c8bab0" },
+    { name: "Short lino Paloma",       price: "$42.000", old: nil,  flag: nil,      swatches: ["#FBF6E9"],           bg: "#fdf9da" },
+  ]},
+].each do |cat| %>
+  <section class="section shell" id="cat-section-<%= cat[:id] %>">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title"><%= cat[:name] %></h2>
+      </div>
+      <button class="see-all">
+        Ver todo
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+    <div class="products">
+      <% cat[:products].each do |p| %>
+        <%= render "shared/product_card", product: p %>
+      <% end %>
+    </div>
+  </section>
+<% end %>
+
+<%# ── FAQ ────────────────────────────────────────────────────── %>
+<section class="section shell" id="faqs" style="padding-bottom:56px;">
+  <div class="section-head">
+    <div>
+      <span class="section-eyebrow">Resolvemos tus dudas</span>
+      <h2 class="section-title">Preguntas frecuentes</h2>
+    </div>
+    <a href="https://wa.me/message/HBW5LBXEBZ7MH1" target="_blank" rel="noopener" class="see-all">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+      </svg>
+      Pregúntanos
+    </a>
+  </div>
+
+  <div class="faqs">
+    <% [
+      { q: "¿Cómo pago mi pedido?",
+        a: "Aceptamos Zelle, Pago Móvil, Binance, PayPal, transferencia bancaria y efectivo al recibir tu pedido (solo en Lechería, Puerto La Cruz y alrededores). Confirmamos todos los detalles por WhatsApp antes del envío." },
+      { q: "¿A dónde envían?",
+        a: "Hacemos delivery a toda Venezuela 🇻🇪. En Lechería, Puerto La Cruz y alrededores entregamos el mismo día. Para envíos nacionales salen al siguiente día hábil." },
+      { q: "¿Cuánto tiempo tarda en llegar mi pedido?",
+        a: "Los envíos nacionales dentro de Venezuela tardan entre 2 y 3 días hábiles en llegar, dependiendo de tu ciudad. Te notificamos en cuanto tu pedido sea despachado." },
+      { q: "¿Puedo hacer un cambio si no me queda la talla?",
+        a: "Sí. Tienes 2 días hábiles desde que recibes tu pedido para solicitar un cambio, sujeto a disponibilidad. La prenda debe estar sin usar y en las mismas condiciones en que la recibiste. Escríbenos por Instagram o WhatsApp con tu pedido y lo gestionamos." },
+      { q: "¿Cómo sé cuál es mi talla?",
+        a: "No tenemos una guía de tallas estándar porque cada prenda puede tener una horma diferente. Lo mejor es escribirnos directamente por Instagram (@naarbymanar) o WhatsApp (0412-0511634) y te asesoramos con la horma específica de cada pieza para que elijas la talla perfecta para ti." },
+      { q: "¿Las piezas son ediciones limitadas?",
+        a: "Sí. Naar es un emprendimiento que trabaja con cantidades pequeñas y seleccionadas. Esto nos permite cuidar la calidad de cada pieza y que no todo el mundo tenga lo mismo. Cuando una talla se agota, puede no volver, así que si algo te gusta, no lo dejes para después." },
+      { q: "¿Cómo hago para comprar?",
+        a: '1) Elige tus prendas y agrégalas al carrito. 2) Haz clic en "Finalizar por WhatsApp". 3) Confirmamos contigo el pago y la dirección de entrega. ¡Listo!' },
+    ].each_with_index do |faq, i| %>
+      <div class="faq" id="faq-<%= i %>">
+        <button class="faq-q" onclick="this.closest('.faq').classList.toggle('is-open')" type="button">
+          <span><%= faq[:q] %></span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="faq-a">
+          <p><%= faq[:a] %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
