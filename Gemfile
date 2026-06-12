@@ -8,7 +8,7 @@ gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "bootsnap", require: false
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 2.0"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootstrap", "~> 5.3"
 gem "sassc-rails", "~> 2.1"
