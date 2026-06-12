@@ -1,8 +1,8 @@
 <div class="product-card">
-  <div class="product-media" style="background:<%= product[:bg] || '#FDF9DA' %>;">
-    <% if product[:flag].present? %>
-      <span class="product-flag <%= 'flag-oferta' if product[:flag] == 'OFERTA' %><%= ' flag-bestseller' if product[:flag] == 'BESTSELLER' %>">
-        <%= product[:flag] %>
+  <div class="product-media" style="background: var(--lemon-pale);">
+    <% if product.flag.present? && !product.sin_flag? %>
+      <span class="product-flag <%= 'flag-oferta' if product.oferta? %><%= ' flag-bestseller' if product.bestseller? %>">
+        <%= product.flag_label %>
       </span>
     <% end %>
     <button class="product-fav" aria-label="Agregar a favoritos" type="button">
@@ -12,11 +12,13 @@
     </button>
   </div>
   <div class="product-body">
-    <h3 class="product-name"><%= product[:name] %></h3>
+    <h3 class="product-name"><%= product.name %></h3>
     <div class="product-meta">
       <div class="product-price">
-        <%= product[:price] %>
-        <% if product[:old].present? %><small><%= product[:old] %></small><% end %>
+        $<%= number_with_delimiter(product.price.to_i) %>
+        <% if product.on_sale? %>
+          <small>$<%= number_with_delimiter(product.compare_at_price.to_i) %></small>
+        <% end %>
       </div>
       <button class="add-btn" aria-label="Agregar al carrito" type="button">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -24,10 +26,11 @@
         </svg>
       </button>
     </div>
-    <% if product[:swatches].present? %>
+    <% swatches = product.swatches %>
+    <% if swatches.any? %>
       <div class="product-swatches">
-        <% product[:swatches].each do |color| %>
-          <span class="swatch" style="background:<%= color %>;"></span>
+        <% swatches.each do |s| %>
+          <span class="swatch" style="background:<%= s[:hex] %>;" title="<%= s[:name] %>"></span>
         <% end %>
       </div>
     <% end %>
