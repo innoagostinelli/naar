@@ -2,7 +2,21 @@ class Admin::CategoriesController < Admin::BaseController
   before_action :set_category, only: [ :edit, :update, :destroy ]
 
   def index
-    @categories = Category.order(:position)
+    @q = Category.ransack(params[:q])
+    categories = @q.result.includes(:products)
+
+    @stats = [
+      { value: categories.size,                                     label: "Total categorías" },
+      { value: categories.count { |c| c.products.any? },   label: "Con productos" },
+      { value: categories.count { |c| c.products.empty? }, label: "Sin productos" },
+    ]
+
+    case params[:has_products]
+    when "yes" then categories = categories.select { |c| c.products.any? }
+    when "no"  then categories = categories.select { |c| c.products.empty? }
+    end
+
+    @categories = categories
   end
 
   def new
@@ -41,6 +55,6 @@ class Admin::CategoriesController < Admin::BaseController
   end
 
   def category_params
-    params.require(:category).permit(:name, :position)
+    params.require(:category).permit(:name, :position, :image)
   end
 end

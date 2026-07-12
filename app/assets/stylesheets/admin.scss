@@ -77,9 +77,9 @@ body { font-family: 'Poppins', sans-serif !important; }
 }
 
 .btn-naar {
-  background: $burgundy;
-  color: #fff;
-  border: none;
+  background: $burgundy !important;
+  color: #fff !important;
+  border: none !important;
   border-radius: 6px;
   padding: 8px 20px;
   font-size: .875rem;
@@ -91,7 +91,7 @@ body { font-family: 'Poppins', sans-serif !important; }
   align-items: center;
   gap: 6px;
   transition: opacity .15s;
-  &:hover { opacity: .88; color: #fff; }
+  &:hover, &:focus { opacity: .88; background: $burgundy !important; color: #fff !important; }
 }
 
 // ── Cards ─────────────────────────────────────────────────────────
@@ -185,6 +185,39 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   &.status-active   { background: #d1fae5; color: #065f46; }
   &.status-draft    { background: #fef3c7; color: #92400e; }
   &.status-archived { background: #f3f4f6; color: #6b7280; }
+  &.badge-count-zero { background: #f3f4f6; color: #6b7280; }
+}
+
+.badge-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  background: #f3f4f6; color: #6b7280;
+  &.tag-lookbook { background: #dbeafe; color: #1d4ed8; }
+  &.tag-try-on   { background: #fef3c7; color: #92400e; }
+  &.tag-unboxing { background: #ede9fe; color: #5b21b6; }
+  &.tag-outfit   { background: #d1fae5; color: #065f46; }
+  &.tag-behind   { background: #fee2e2; color: #991b1b; }
+}
+
+.badge-order-status {
+  display: inline-flex;
+  align-items: center;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  &.status-pendiente_contacto { background: #f3f4f6; color: #6b7280; }
+  &.status-espera_pago        { background: #fef3c7; color: #92400e; }
+  &.status-pagada             { background: #d1fae5; color: #065f46; }
+  &.status-anulada            { background: #fee2e2; color: #991b1b; }
 }
 
 // ── Tables ────────────────────────────────────────────────────────

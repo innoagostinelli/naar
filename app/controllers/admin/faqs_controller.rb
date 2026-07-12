@@ -2,7 +2,8 @@ class Admin::FaqsController < Admin::BaseController
   before_action :set_faq, only: [ :edit, :update, :destroy ]
 
   def index
-    @faqs = Faq.order(:position)
+    @q = Faq.ransack(params[:q])
+    @faqs = @q.result
   end
 
   def new

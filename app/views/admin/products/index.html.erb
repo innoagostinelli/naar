@@ -6,6 +6,18 @@
   <% end %>
 <% end %>
 
+<%= render "admin/shared/stat_cards", cards: @stats %>
+
+<%= render "admin/shared/filter_bar", q: @q, url: admin_products_path, fields: [
+  { attr: :name_cont, type: :search, label: "Buscar", col: 3 },
+  { attr: :category_id_eq, type: :select, label: "Categoría", col: 3,
+    options: Category.order(:position).pluck(:name, :id) },
+  { attr: :flag_eq, type: :select, label: "Flag", col: 2,
+    options: Product.flags.map { |k, v| [ k.humanize, v ] } },
+  { attr: :status_eq, type: :select, label: "Estado", col: 2,
+    options: Product.statuses.map { |k, v| [ k.humanize, v ] } },
+] %>
+
 <div class="card">
   <div class="table-responsive">
     <table class="table table-vcenter table-hover card-table">
@@ -40,7 +52,16 @@
             </td>
           </tr>
         <% end %>
+        <% if @products.empty? %>
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">No hay productos con estos filtros.</td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
+</div>
+
+<div class="d-flex justify-content-center mt-3">
+  <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
 </div>

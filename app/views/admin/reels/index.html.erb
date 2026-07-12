@@ -6,6 +6,15 @@
   <% end %>
 <% end %>
 
+<%= render "admin/shared/stat_cards", cards: @stats %>
+
+<%= render "admin/shared/filter_bar", q: @q, url: admin_reels_path, fields: [
+  { attr: :tag_eq, type: :select, label: "Tag", col: 3,
+    options: Reel.distinct.order(:tag).pluck(:tag).compact },
+  { attr: "has_video", type: :select, label: "Video", col: 3, plain: true,
+    options: [ [ "Con video", "yes" ], [ "Sin video", "no" ] ] },
+] %>
+
 <div class="card">
   <div class="table-responsive">
     <table class="table table-vcenter table-hover card-table">
@@ -14,6 +23,7 @@
           <th class="w-1 text-center">Pos.</th>
           <th>Tag</th>
           <th>Label</th>
+          <th>Video</th>
           <th></th>
         </tr>
       </thead>
@@ -21,8 +31,17 @@
         <% @reels.each do |reel| %>
           <tr>
             <td class="text-center text-muted"><%= reel.position %></td>
-            <td><span class="badge-flag flag-nuevo"><%= reel.tag %></span></td>
+            <td>
+              <span class="badge-tag tag-<%= reel.tag.to_s.downcase.gsub(/[^a-z0-9]+/, '-') %>"><%= reel.tag %></span>
+            </td>
             <td class="fw-semibold"><%= reel.label %></td>
+            <td>
+              <% if reel.video.attached? %>
+                <span class="text-success">Cargado</span>
+              <% else %>
+                <span class="text-muted">Sin video</span>
+              <% end %>
+            </td>
             <td>
               <div class="admin-actions justify-content-end">
                 <%= link_to "Editar", edit_admin_reel_path(reel), class: "btn btn-sm btn-ghost" %>
@@ -32,6 +51,11 @@
                       class: "btn btn-sm btn-danger-ghost" %>
               </div>
             </td>
+          </tr>
+        <% end %>
+        <% if @reels.empty? %>
+          <tr>
+            <td colspan="5" class="text-center text-muted py-4">No hay reels con estos filtros.</td>
           </tr>
         <% end %>
       </tbody>

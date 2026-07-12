@@ -1,0 +1,81 @@
+<% content_for :page_title, "Pedido ##{@order.id}" %>
+<% content_for :topbar_actions do %>
+  <%= link_to "Volver a pedidos", admin_orders_path, class: "btn btn-ghost" %>
+<% end %>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <div class="text-muted"><%= @order.created_at.strftime("%d/%m/%Y %H:%M") %></div>
+      <%= form_with model: [ :admin, @order ], method: :patch, data: { controller: "auto-submit" } do |f| %>
+        <%= f.select :status, Order::STATUS_LABELS.map { |key, label| [ label, key ] },
+              { selected: @order.status },
+              { class: "form-select form-select-sm badge-order-status status-#{@order.status}",
+                data: { action: "change->auto-submit#submit" } } %>
+      <% end %>
+    </div>
+    <div class="row">
+      <div class="col-auto">
+        <div class="text-muted small">Cliente</div>
+        <div class="fw-semibold"><%= @order.customer_name %></div>
+      </div>
+      <div class="col-auto">
+        <div class="text-muted small">Teléfono</div>
+        <div class="fw-semibold"><%= link_to @order.customer_phone, "https://wa.me/#{@order.customer_phone.to_s.gsub(/\D/, '')}", target: "_blank", rel: "noopener" %></div>
+      </div>
+      <div class="col-auto">
+        <div class="text-muted small">Entrega</div>
+        <div class="fw-semibold"><%= @order.delivery? ? "Delivery" : "Retiro en tienda" %></div>
+      </div>
+      <% if @order.delivery? %>
+        <div class="col-auto">
+          <div class="text-muted small">Ubicación</div>
+          <div class="fw-semibold"><%= [ @order.city&.name, @order.state&.name, @order.country ].compact_blank.join(", ") %></div>
+        </div>
+        <div class="col-auto">
+          <div class="text-muted small">Dirección</div>
+          <div class="fw-semibold"><%= @order.address %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-vcenter card-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Producto</th>
+          <th>Talla / Color</th>
+          <th class="text-center">Cant.</th>
+          <th class="text-end">Precio</th>
+          <th class="text-end">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @order.order_items.each do |item| %>
+          <tr>
+            <td class="w-1">
+              <% if item.image_url.present? %>
+                <img src="<%= item.image_url %>" alt="<%= item.name %>" style="width:48px; height:60px; object-fit:cover; border-radius:8px;">
+              <% end %>
+            </td>
+            <td class="fw-semibold"><%= item.name %></td>
+            <td class="text-muted"><%= [ item.size, item.color ].compact_blank.join(" / ").presence || "—" %></td>
+            <td class="text-center"><%= item.qty %></td>
+            <td class="text-end">$<%= number_with_delimiter(item.price.to_i) %></td>
+            <td class="text-end fw-semibold">$<%= number_with_delimiter(item.subtotal.to_i) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" class="text-end fw-semibold">Total</td>
+          <td class="text-end fw-bold">$<%= number_with_delimiter(@order.total.to_i) %></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

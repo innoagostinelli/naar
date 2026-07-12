@@ -6,12 +6,21 @@
   <% end %>
 <% end %>
 
+<%= render "admin/shared/stat_cards", cards: @stats %>
+
+<%= render "admin/shared/filter_bar", q: @q, url: admin_categories_path, fields: [
+  { attr: :name_cont, type: :search, label: "Buscar", col: 4 },
+  { attr: "has_products", type: :select, label: "Productos", col: 3, plain: true,
+    options: [ [ "Con productos", "yes" ], [ "Sin productos", "no" ] ] },
+] %>
+
 <div class="card">
   <div class="table-responsive">
     <table class="table table-vcenter table-hover card-table">
       <thead>
         <tr>
           <th class="w-1 text-center">Pos.</th>
+          <th class="w-1">Imagen</th>
           <th>Nombre</th>
           <th>Slug</th>
           <th>Productos activos</th>
@@ -20,12 +29,22 @@
       </thead>
       <tbody>
         <% @categories.each do |cat| %>
+          <% active_count = cat.products.select(&:active?).size %>
           <tr>
             <td class="text-center text-muted"><%= cat.position %></td>
+            <td>
+              <% if cat.image.attached? %>
+                <%= image_tag cat.image.variant(resize_to_fill: [ 56, 56 ]), style: "width:56px; height:56px; object-fit:cover; border-radius:6px;" %>
+              <% else %>
+                <span class="text-muted">Sin imagen</span>
+              <% end %>
+            </td>
             <td class="fw-semibold"><%= cat.name %></td>
             <td><code class="text-muted"><%= cat.slug %></code></td>
             <td>
-              <span class="badge-status status-active"><%= cat.products.active.count %> productos</span>
+              <span class="badge-status <%= active_count > 0 ? "status-active" : "badge-count-zero" %>">
+                <%= active_count %> productos
+              </span>
             </td>
             <td>
               <div class="admin-actions justify-content-end">
@@ -36,6 +55,11 @@
                       class: "btn btn-sm btn-danger-ghost" %>
               </div>
             </td>
+          </tr>
+        <% end %>
+        <% if @categories.empty? %>
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">No hay categorías con estos filtros.</td>
           </tr>
         <% end %>
       </tbody>

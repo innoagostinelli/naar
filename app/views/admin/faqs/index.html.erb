@@ -6,6 +6,10 @@
   <% end %>
 <% end %>
 
+<%= render "admin/shared/filter_bar", q: @q, url: admin_faqs_path, fields: [
+  { attr: :question_or_answer_cont, type: :search, label: "Buscar en pregunta o respuesta", col: 6 },
+] %>
+
 <div class="card">
   <div class="table-responsive">
     <table class="table table-vcenter table-hover card-table">
@@ -13,6 +17,7 @@
         <tr>
           <th class="w-1 text-center">Pos.</th>
           <th>Pregunta</th>
+          <th>Respuesta</th>
           <th></th>
         </tr>
       </thead>
@@ -21,6 +26,7 @@
           <tr>
             <td class="text-center text-muted"><%= faq.position %></td>
             <td class="fw-semibold"><%= faq.question %></td>
+            <td class="text-muted"><%= truncate(faq.answer, length: 80) %></td>
             <td>
               <div class="admin-actions justify-content-end">
                 <%= link_to "Editar", edit_admin_faq_path(faq), class: "btn btn-sm btn-ghost" %>
@@ -30,6 +36,11 @@
                       class: "btn btn-sm btn-danger-ghost" %>
               </div>
             </td>
+          </tr>
+        <% end %>
+        <% if @faqs.empty? %>
+          <tr>
+            <td colspan="4" class="text-center text-muted py-4">No hay FAQs con este filtro.</td>
           </tr>
         <% end %>
       </tbody>

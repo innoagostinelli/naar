@@ -32,7 +32,7 @@
   <div class="card mb-4">
     <div class="card-header"><h3 class="card-title">Precios y configuración</h3></div>
     <div class="card-body">
-      <div class="row g-3">
+      <div class="row g-3" data-controller="product-flag-sync">
         <div class="col-md-3">
           <%= f.label :price, "Precio ($)", class: "form-label" %>
           <div class="input-group">
@@ -44,14 +44,15 @@
           <%= f.label :compare_at_price, "Precio anterior ($)", class: "form-label" %>
           <div class="input-group">
             <span class="input-group-text">$</span>
-            <%= f.number_field :compare_at_price, step: "0.01", class: "form-control", placeholder: "—" %>
+            <%= f.number_field :compare_at_price, step: "0.01", class: "form-control", placeholder: "—",
+                  data: { product_flag_sync_target: "compareAtPrice", action: "input->product-flag-sync#sync" } %>
           </div>
           <div class="form-text">Dejar vacío si no hay descuento</div>
         </div>
         <div class="col-md-2">
           <%= f.label :flag, "Etiqueta", class: "form-label" %>
           <%= f.select :flag, Product.flags.keys.map { |k| [k.humanize, k] },
-                {}, { class: "form-select" } %>
+                {}, { class: "form-select", data: { product_flag_sync_target: "flag" } } %>
         </div>
         <div class="col-md-2">
           <%= f.label :status, "Estado", class: "form-label" %>

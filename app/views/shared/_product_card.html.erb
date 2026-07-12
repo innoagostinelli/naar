@@ -1,11 +1,20 @@
-<div class="product-card">
-  <div class="product-media" style="background: var(--lemon-pale);">
+<div class="product-card"
+     role="button" tabindex="0"
+     data-action="click->product-modal#open keydown.enter->product-modal#open"
+     data-product="<%= product_modal_data(product).to_json %>">
+  <% gallery = product.cover_gallery.select { |img| img.image.attached? } %>
+  <div class="product-media" data-controller="card-carousel"
+       data-action="mouseenter->card-carousel#start mouseleave->card-carousel#stop">
+    <% gallery.each_with_index do |img, i| %>
+      <%= image_tag img.image.variant(resize_to_fill: [ 600, 800 ]), alt: img.alt.presence || product.name,
+            class: "media-carousel-slide #{'is-active' if i.zero?}", data: { card_carousel_target: "slide" } %>
+    <% end %>
     <% if product.flag.present? && !product.sin_flag? %>
       <span class="product-flag <%= 'flag-oferta' if product.oferta? %><%= ' flag-bestseller' if product.bestseller? %>">
         <%= product.flag_label %>
       </span>
     <% end %>
-    <button class="product-fav" aria-label="Agregar a favoritos" type="button">
+    <button class="product-fav" aria-label="Agregar a favoritos" type="button" data-action="product-modal#stop">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
       </svg>

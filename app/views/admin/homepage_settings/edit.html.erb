@@ -1,0 +1,34 @@
+<% content_for :page_title, "Textos de inicio" %>
+
+<%= form_with model: @homepage_setting, url: admin_homepage_setting_path, method: :patch do |f| %>
+  <div class="card">
+    <div class="card-header"><h3 class="card-title">Sección "Lo nuevo"</h3></div>
+    <div class="card-body">
+      <% if @homepage_setting.errors.any? %>
+        <div class="alert alert-danger mb-4">
+          <ul class="mb-0">
+            <% @homepage_setting.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <%= f.label :new_arrivals_eyebrow, "Texto pequeño (arriba)", class: "form-label" %>
+          <%= f.text_field :new_arrivals_eyebrow, class: "form-control", placeholder: "Recién llegado" %>
+          <div class="form-text">Se muestra chico, arriba del título (ej. "Recién llegado · Mayo 2026").</div>
+        </div>
+        <div class="col-md-8">
+          <%= f.label :new_arrivals_title, "Título", class: "form-label" %>
+          <%= f.text_field :new_arrivals_title, class: "form-control", placeholder: "Lo nuevo en Naar." %>
+          <div class="form-text">Título grande de la sección de productos nuevos en la página de inicio.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-3">
+    <%= f.submit "Guardar cambios", class: "btn btn-naar" %>
+    <%= link_to "Ver en la tienda", root_path, target: "_blank", rel: "noopener", class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

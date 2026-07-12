@@ -6,5 +6,6 @@ class Admin::DashboardController < Admin::BaseController
     @total_cats      = Category.count
     @total_faqs      = Faq.count
     @total_reels     = Reel.count
+    @storage_usage   = StorageUsageService.call
   end
 end

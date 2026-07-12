@@ -2,7 +2,16 @@ class Admin::ProductsController < Admin::BaseController
   before_action :set_product, only: [ :edit, :update, :destroy ]
 
   def index
-    @products = Product.includes(:category).order(:category_id, :position)
+    @q = Product.ransack(params[:q])
+    scope = @q.result.includes(:category).order(:category_id, :position)
+    @pagy, @products = pagy(scope)
+
+    @stats = [
+      { value: Product.count,          label: "Total" },
+      { value: Product.active.count,   label: "Activos" },
+      { value: Product.nuevo.count,    label: "Nuevos" },
+      { value: Product.oferta.count,   label: "En oferta" },
+    ]
   end
 
   def new

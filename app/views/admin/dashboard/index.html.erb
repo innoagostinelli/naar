@@ -45,6 +45,24 @@
   </div>
 </div>
 
+<div class="card mb-4">
+  <div class="card-header"><h3 class="card-title">Almacenamiento (S3)</h3></div>
+  <div class="card-body">
+    <% if @storage_usage.available %>
+      <% percent = @storage_usage.percent_used %>
+      <div class="d-flex justify-content-between mb-1">
+        <span><%= number_to_human_size(@storage_usage.bytes_used) %> de <%= number_to_human_size(@storage_usage.limit_bytes) %> usados</span>
+        <span class="text-muted"><%= @storage_usage.object_count %> archivos · <%= percent.round(1) %>%</span>
+      </div>
+      <div class="progress" style="height:8px;">
+        <div class="progress-bar <%= percent >= 80 ? 'bg-danger' : '' %>" role="progressbar" style="width:<%= percent %>%"></div>
+      </div>
+    <% else %>
+      <span class="text-muted">Datos de almacenamiento no disponibles<%= " (#{@storage_usage.error})" if @storage_usage.error %>.</span>
+    <% end %>
+  </div>
+</div>
+
 <div class="card">
   <div class="card-header"><h3 class="card-title">Accesos rápidos</h3></div>
   <div class="card-body d-flex gap-3 flex-wrap">

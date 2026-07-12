@@ -1,12 +1,26 @@
 class Category < ApplicationRecord
+  include AttachmentValidatable
+
   has_many :products, -> { order(:position) }, dependent: :destroy
+  has_one_attached :image
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
+  validates_attachment :image,
+    content_types: %w[image/jpeg image/png image/webp image/gif],
+    max_size: 8.megabytes
 
   before_validation :generate_slug, if: -> { slug.blank? && name.present? }
 
   default_scope { order(:position) }
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[name]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[products]
+  end
 
   private
 

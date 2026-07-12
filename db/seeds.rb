@@ -34,7 +34,7 @@ def create_product(category_slug:, name:, price:, compare_at_price: nil, flag: :
   end
 
   swatches.each_with_index do |(color_hex, color_name), i|
-    %w[XS S M L XL].each do |size|
+    %w[S M L].each do |size|
       ProductVariant.find_or_create_by!(product: product, size: size, color_hex: color_hex) do |v|
         v.color_name = color_name
         v.stock      = 10
@@ -93,11 +93,11 @@ create_product(category_slug: "pantalones", name: "Jogger satinado Elena",   pri
 
 # ── Vestidos (adicionales) ───────────────────────────────────────
 create_product(category_slug: "vestidos", name: "Vestido lencero Aitana",  price: 62, flag: :bestseller,   position: 3, swatches: [["#820045","Burgundy"],["#211218","Negro"]])
-create_product(category_slug: "vestidos", name: "Vestido corto Salomé",    price: 54, compare_at_price: 65, flag: :oferta, position: 4, swatches: [["#211218","Negro"]])
-create_product(category_slug: "vestidos", name: "Maxi vestido Constanza",  price: 78, flag: :nuevo,        position: 5, swatches: [["#F2E651","Amarillo"],["#FBF6E9","Crema"]])
-create_product(category_slug: "vestidos", name: "Vestido Polka Dot",       price: 100, compare_at_price: 120, flag: :oferta, position: 6,
-  description: "Tu vestido para esa noche que vas a recordar. Estampado polka dot con una silueta que define sin apretar.",
+create_product(category_slug: "vestidos", name: "Vestido Polka Dot",       price: 100, compare_at_price: 120, flag: :oferta, position: 4,
+  description: "Tu vestido para esa noche que vas a recordar. Estampado polka dot con una silueta de gala y caída impecable: pensado para graduaciones, bodas y eventos donde quieres destacar sin esfuerzo. Llévalo con tacones y toda tu actitud. ✨",
   swatches: [["#FBF6E9","Crema"]])
+create_product(category_slug: "vestidos", name: "Vestido corto Salomé",    price: 54, compare_at_price: 65, flag: :oferta, position: 5, swatches: [["#211218","Negro"]])
+create_product(category_slug: "vestidos", name: "Maxi vestido Constanza",  price: 78, flag: :nuevo,        position: 6, swatches: [["#F2E651","Amarillo"],["#FBF6E9","Crema"]])
 
 puts "  #{Product.count} productos creados"
 puts "  #{ProductVariant.count} variantes creadas"
@@ -145,4 +145,39 @@ reels_data.each do |data|
 end
 
 puts "  #{Reel.count} reels creados"
+
+# ── Estados y ciudades (Venezuela) ───────────────────────────────
+states_and_cities = {
+  "Amazonas"          => [ "Puerto Ayacucho", "San Fernando de Atabapo", "La Esmeralda" ],
+  "Anzoátegui"        => [ "Barcelona", "Puerto La Cruz", "Lechería", "El Tigre", "Guanta", "Anaco" ],
+  "Apure"             => [ "San Fernando de Apure", "Guasdualito", "Achaguas" ],
+  "Aragua"            => [ "Maracay", "Turmero", "La Victoria", "Cagua", "El Limón" ],
+  "Barinas"           => [ "Barinas", "Barinitas", "Socopó" ],
+  "Bolívar"           => [ "Ciudad Bolívar", "Ciudad Guayana", "Puerto Ordaz", "Upata", "Santa Elena de Uairén" ],
+  "Carabobo"          => [ "Valencia", "Puerto Cabello", "Guacara", "Naguanagua", "San Diego" ],
+  "Cojedes"           => [ "San Carlos", "Tinaquillo", "Tinaco" ],
+  "Delta Amacuro"     => [ "Tucupita", "Pedernales" ],
+  "Distrito Capital"  => [ "Caracas" ],
+  "Falcón"            => [ "Coro", "Punto Fijo", "Chichiriviche", "Tucacas" ],
+  "Guárico"           => [ "San Juan de los Morros", "Calabozo", "Valle de la Pascua", "Zaraza" ],
+  "Lara"              => [ "Barquisimeto", "Carora", "Cabudare", "Quíbor" ],
+  "Mérida"            => [ "Mérida", "El Vigía", "Ejido", "Tovar" ],
+  "Miranda"           => [ "Los Teques", "Guarenas", "Guatire", "Petare", "Charallave", "Higuerote" ],
+  "Monagas"           => [ "Maturín", "Punta de Mata", "Caripito" ],
+  "Nueva Esparta"     => [ "Porlamar", "La Asunción", "Pampatar", "Juan Griego" ],
+  "Portuguesa"        => [ "Guanare", "Acarigua", "Araure", "Turén" ],
+  "Sucre"             => [ "Cumaná", "Carúpano", "Güiria", "Cariaco" ],
+  "Táchira"           => [ "San Cristóbal", "Táriba", "Rubio", "La Fría" ],
+  "Trujillo"          => [ "Trujillo", "Valera", "Boconó" ],
+  "La Guaira"         => [ "La Guaira", "Catia La Mar", "Maiquetía", "Caraballeda" ],
+  "Yaracuy"           => [ "San Felipe", "Yaritagua", "Chivacoa" ],
+  "Zulia"             => [ "Maracaibo", "Cabimas", "Ciudad Ojeda", "Santa Bárbara del Zulia" ],
+}
+
+states_and_cities.each do |state_name, city_names|
+  state = State.find_or_create_by!(name: state_name)
+  city_names.each { |city_name| City.find_or_create_by!(state: state, name: city_name) }
+end
+
+puts "  #{State.count} estados y #{City.count} ciudades creados"
 puts "Seed completado ✓"

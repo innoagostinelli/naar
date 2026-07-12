@@ -12,10 +12,15 @@ export default class extends Controller {
 
     if (slug === "all") {
       this.sectionTargets.forEach(s => s.hidden = false)
+      this.sectionTargets.find(s => s.dataset.category === "nuevos")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" })
     } else {
       this.sectionTargets.forEach(s => {
         s.hidden = s.dataset.category !== slug
       })
+
+      const target = this.sectionTargets.find(s => s.dataset.category === slug)
+      target?.scrollIntoView({ behavior: "smooth", block: "start" })
     }
   }
 }

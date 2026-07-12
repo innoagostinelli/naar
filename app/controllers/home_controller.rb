@@ -4,8 +4,10 @@ class HomeController < ApplicationController
                           .where(products: { status: :active })
                           .distinct
                           .order(:position)
-    @nuevos     = Product.active.nuevo.order(:position).limit(8)
+                          .includes(image_attachment: :blob)
+    @nuevos     = Product.active.nuevo.order(:position).limit(8).includes(:images, :variants)
     @reels      = Reel.all
     @faqs       = Faq.all
+    @homepage_setting = HomepageSetting.instance
   end
 end

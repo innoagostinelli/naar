@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
   <%= stylesheet_link_tag "admin", media: "all" %>
   <%= csrf_meta_tags %>
+  <%= javascript_importmap_tags %>
 </head>
 <body class="antialiased">
 <div class="wrapper">
@@ -61,6 +62,19 @@
           </li>
 
           <li class="nav-item mt-2">
+            <span class="nav-link-header">Ventas</span>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to admin_orders_path, class: "nav-link #{controller_name == 'orders' ? 'active' : ''}" do %>
+              <span class="nav-link-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </span>
+              <span class="nav-link-title">Pedidos</span>
+            <% end %>
+          </li>
+
+          <li class="nav-item mt-2">
             <span class="nav-link-header">Contenido</span>
           </li>
 
@@ -79,6 +93,15 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
               </span>
               <span class="nav-link-title">Reels</span>
+            <% end %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to edit_admin_homepage_setting_path, class: "nav-link #{controller_name == 'homepage_settings' ? 'active' : ''}" do %>
+              <span class="nav-link-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+              </span>
+              <span class="nav-link-title">Textos de inicio</span>
             <% end %>
           </li>
 

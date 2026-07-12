@@ -2,7 +2,21 @@ class Admin::ReelsController < Admin::BaseController
   before_action :set_reel, only: [ :edit, :update, :destroy ]
 
   def index
-    @reels = Reel.order(:position)
+    @q = Reel.ransack(params[:q])
+    reels = @q.result
+
+    @stats = [
+      { value: reels.size,                                       label: "Total" },
+      { value: reels.count { |r| r.video.attached? }, label: "Con video" },
+      { value: reels.count { |r| !r.video.attached? }, label: "Sin video" },
+    ]
+
+    case params[:has_video]
+    when "yes" then reels = reels.select { |r| r.video.attached? }
+    when "no"  then reels = reels.select { |r| !r.video.attached? }
+    end
+
+    @reels = reels
   end
 
   def new
@@ -41,6 +55,6 @@ class Admin::ReelsController < Admin::BaseController
   end
 
   def reel_params
-    params.require(:reel).permit(:tag, :label, :position)
+    params.require(:reel).permit(:tag, :label, :position, :video)
   end
 end

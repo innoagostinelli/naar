@@ -13,7 +13,11 @@
   <div class="reel-row">
     <% @reels.each do |reel| %>
       <div class="reel">
-        <div class="reel-placeholder" style="background: linear-gradient(160deg, #e8c8d8 0%, #c87da8 100%);"></div>
+        <% if reel.video.attached? %>
+          <video class="reel-placeholder" src="<%= url_for(reel.video) %>" autoplay muted loop playsinline></video>
+        <% else %>
+          <div class="reel-placeholder" style="background: linear-gradient(160deg, #e8c8d8 0%, #c87da8 100%);"></div>
+        <% end %>
         <span class="reel-tag"><%= reel.tag %></span>
         <div class="reel-label">
           <span><%= reel.label %></span>
@@ -71,7 +75,11 @@
               data-category-filter-target="tile"
               data-slug="<%= cat.slug %>"
               data-action="click->category-filter#filter">
-        <div class="cat-img" style="background:var(--lemon-pale);"></div>
+        <% if cat.image.attached? %>
+          <div class="cat-img"><%= image_tag cat.image.variant(resize_to_fill: [ 300, 300 ]), alt: cat.name %></div>
+        <% else %>
+          <div class="cat-img" style="background:var(--lemon-pale);"></div>
+        <% end %>
         <span class="cat-name"><%= cat.name %></span>
       </button>
     <% end %>
@@ -84,8 +92,8 @@
          data-category="nuevos">
   <div class="section-head">
     <div>
-      <span class="section-eyebrow">Recién llegado · Mayo 2026</span>
-      <h2 class="section-title">Lo nuevo en Naar.</h2>
+      <span class="section-eyebrow"><%= @homepage_setting.new_arrivals_eyebrow %></span>
+      <h2 class="section-title"><%= @homepage_setting.new_arrivals_title %></h2>
     </div>
     <button class="see-all" type="button">
       Ver más
@@ -101,25 +109,33 @@
 </section>
 
 <%# ── Catálogo por categoría ──────────────────────────────────── %>
+<% preview_count = 4 %>
 <% @categories.each do |cat| %>
-  <% items = cat.products.active.order(:position).limit(4) %>
+  <% items = cat.products.active.order(:position).includes(:images, :variants) %>
   <% next if items.empty? %>
 
   <section class="section shell" id="cat-section-<%= cat.slug %>"
            data-category-filter-target="section"
-           data-category="<%= cat.slug %>">
+           data-category="<%= cat.slug %>"
+           data-controller="<%= "see-more" if items.size > preview_count %>">
     <div class="section-head">
       <div>
         <h2 class="section-title"><%= cat.name %></h2>
       </div>
-      <button class="see-all" type="button">
-        Ver todo
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
-      </button>
+      <% if items.size > preview_count %>
+        <button class="see-all" type="button" data-see-more-target="button" data-action="click->see-more#expand">
+          Ver todo
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+        </button>
+      <% end %>
     </div>
     <div class="products">
-      <% items.each do |product| %>
-        <%= render "shared/product_card", product: product %>
+      <% items.each_with_index do |product, i| %>
+        <% if i < preview_count %>
+          <%= render "shared/product_card", product: product %>
+        <% else %>
+          <div class="grid-extra-item" data-see-more-target="extra"><%= render "shared/product_card", product: product %></div>
+        <% end %>
       <% end %>
     </div>
   </section>
