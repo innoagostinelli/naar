@@ -1,6 +1,8 @@
 class Order < ApplicationRecord
   has_secure_token
 
+  attr_accessor :stock_adjustment_warnings
+
   has_many :order_items, dependent: :destroy
   accepts_nested_attributes_for :order_items
 
@@ -26,6 +28,8 @@ class Order < ApplicationRecord
   validates :city, presence: true, if: :delivery?
   validate :city_belongs_to_state, if: :delivery?
 
+  after_update :adjust_stock_for_status_change, if: :saved_change_to_status?
+
   def to_param
     token
   end
@@ -38,5 +42,18 @@ class Order < ApplicationRecord
 
   def city_belongs_to_state
     errors.add(:city, "no pertenece al estado seleccionado") if city && state && city.state_id != state.id
+  end
+
+  def adjust_stock_for_status_change
+    from, to = saved_change_to_status
+    result = OrderStockAdjuster.call(order: self, from: from, to: to)
+    self.stock_adjustment_warnings = result.unmatched_items
+
+    result.unmatched_items.each do |item|
+      Rails.logger.warn(
+        "OrderStockAdjuster: no se pudo ajustar stock del item ##{item.id} " \
+        "(#{item.name} / #{item.size} / #{item.color}) en la orden #{token}"
+      )
+    end
   end
 end

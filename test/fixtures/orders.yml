@@ -1,0 +1,15 @@
+espera_pago_order:
+  token: order-espera-pago-token
+  customer_name: Cliente Test
+  customer_phone: "04141234567"
+  fulfillment_method: pickup
+  status: espera_pago
+  total: 250.00
+
+pagada_order:
+  token: order-pagada-token
+  customer_name: Cliente Pagada
+  customer_phone: "04141234568"
+  fulfillment_method: pickup
+  status: pagada
+  total: 100.00

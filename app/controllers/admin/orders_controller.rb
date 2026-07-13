@@ -20,7 +20,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def update
     if @order.update(status_params)
-      redirect_back fallback_location: admin_orders_path, notice: "Estado del pedido actualizado."
+      redirect_back fallback_location: admin_orders_path, notice: update_notice
     else
       redirect_back fallback_location: admin_orders_path, alert: "No se pudo actualizar el estado."
     end
@@ -34,6 +34,14 @@ class Admin::OrdersController < Admin::BaseController
 
   def status_params
     params.require(:order).permit(:status)
+  end
+
+  def update_notice
+    notice = "Estado del pedido actualizado."
+    return notice if @order.stock_adjustment_warnings.blank?
+
+    details = @order.stock_adjustment_warnings.map { |item| "#{item.name} (#{item.size} / #{item.color})" }.join(", ")
+    "#{notice} Atención: no se pudo ajustar el stock de: #{details} — revisar manualmente."
   end
 
   def date_range

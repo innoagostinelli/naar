@@ -1,0 +1,52 @@
+item_matched:
+  order: espera_pago_order
+  product: remera
+  name: Remera Oversize
+  size: M
+  color: Negro
+  qty: 2
+  price: 25.00
+
+item_unmatched_no_product:
+  order: espera_pago_order
+  name: Producto Borrado
+  size: M
+  color: Negro
+  qty: 1
+  price: 20.00
+
+item_unmatched_bad_size:
+  order: espera_pago_order
+  product: remera
+  name: Remera Oversize
+  size: XXL
+  color: Negro
+  qty: 1
+  price: 25.00
+
+item_unlimited:
+  order: espera_pago_order
+  product: remera
+  name: Remera Oversize
+  size: S
+  color: Blanco
+  qty: 5
+  price: 25.00
+
+item_oversell:
+  order: espera_pago_order
+  product: remera
+  name: Remera Oversize
+  size: XL
+  color: Negro
+  qty: 5
+  price: 25.00
+
+item_for_pagada_order:
+  order: pagada_order
+  product: remera
+  name: Remera Oversize
+  size: L
+  color: Negro
+  qty: 2
+  price: 25.00

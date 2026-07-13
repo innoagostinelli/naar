@@ -1,0 +1,26 @@
+remera_m_negro:
+  product: remera
+  size: M
+  color_name: Negro
+  color_hex: "#000000"
+  stock: 10
+
+remera_l_negro:
+  product: remera
+  size: L
+  color_name: Negro
+  color_hex: "#000000"
+  stock: 3
+
+remera_unlimited:
+  product: remera
+  size: S
+  color_name: Blanco
+  color_hex: "#FFFFFF"
+
+remera_oversell:
+  product: remera
+  size: XL
+  color_name: Negro
+  color_hex: "#000000"
+  stock: 1
