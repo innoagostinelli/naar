@@ -13,6 +13,17 @@ amazon:
   region: <%= Rails.application.credentials.dig(:aws, :region) %>
   bucket: <%= Rails.application.credentials.dig(:aws, :bucket) %>
 
+# Cloudflare R2 (API S3-compatible). Reemplaza a "amazon" en producción una
+# vez migrados los objetos existentes (ver active_storage_blobs.service_name).
+r2:
+  service: S3
+  access_key_id: <%= Rails.application.credentials.dig(:r2, :access_key_id) %>
+  secret_access_key: <%= Rails.application.credentials.dig(:r2, :secret_access_key) %>
+  region: auto
+  bucket: <%= Rails.application.credentials.dig(:r2, :bucket) %>
+  endpoint: <%= Rails.application.credentials.dig(:r2, :endpoint) %>
+  force_path_style: true
+
 # Remember not to checkin your GCS keyfile to a repository
 # google:
 #   service: GCS

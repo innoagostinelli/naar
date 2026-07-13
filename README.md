@@ -7,7 +7,7 @@ Catálogo de ropa online para **Manar**, con panel de administración propio, ge
 - Ruby 3.3.6
 - Rails 8.1.3
 - PostgreSQL
-- Active Storage con soporte para Amazon S3 (direct upload) y disco local
+- Active Storage con soporte para Cloudflare R2 (S3-compatible, direct upload) y disco local
 - Turbo + Stimulus (importmap, sin bundler de JS)
 - Bootstrap 5.3 + Sass
 - Ransack (filtros de búsqueda) + Pagy (paginación) en el panel admin
@@ -41,7 +41,7 @@ bin/rails db:setup
 
 ### Configuración
 
-La app usa Rails credentials para las claves de AWS S3. Asegurate de tener `config/master.key` (no versionado).
+La app usa Rails credentials para las claves de Cloudflare R2 (API S3-compatible, namespace `r2` en credentials). Asegurate de tener `config/master.key` (no versionado).
 
 ## Desarrollo
 
