@@ -23,6 +23,11 @@ r2:
   bucket: <%= Rails.application.credentials.dig(:r2, :bucket) %>
   endpoint: <%= Rails.application.credentials.dig(:r2, :endpoint) %>
   force_path_style: true
+  # aws-sdk-s3 agrega por defecto un checksum extra (CRC32) en cada upload;
+  # R2 rechaza requests con más de un checksum ("You can only specify one
+  # non-default checksum at a time"). Desactivarlo para compatibilidad.
+  request_checksum_calculation: when_required
+  response_checksum_validation: when_required
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:
