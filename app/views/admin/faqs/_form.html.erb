@@ -1,0 +1,36 @@
+<%= form_with model: [:admin, faq] do |f| %>
+  <div class="card">
+    <div class="card-header"><h3 class="card-title">Pregunta frecuente</h3></div>
+    <div class="card-body">
+      <% if faq.errors.any? %>
+        <div class="alert alert-danger mb-4">
+          <ul class="mb-0">
+            <% faq.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="row g-3">
+        <div class="col-12">
+          <%= f.label :question, "Pregunta", class: "form-label" %>
+          <%= f.text_field :question, class: "form-control", placeholder: "¿Cómo hago para comprar?" %>
+        </div>
+        <div class="col-12">
+          <%= f.label :answer, "Respuesta", class: "form-label" %>
+          <%= f.text_area :answer, rows: 5, class: "form-control",
+                placeholder: "Escribí la respuesta aquí..." %>
+        </div>
+        <div class="col-md-2">
+          <%= f.label :position, "Posición", class: "form-label" %>
+          <%= f.number_field :position, class: "form-control" %>
+          <div class="form-text">Orden en la página</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-3">
+    <%= f.submit faq.new_record? ? "Crear FAQ" : "Guardar cambios", class: "btn btn-naar" %>
+    <%= link_to "Cancelar", admin_faqs_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

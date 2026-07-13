@@ -1,0 +1,334 @@
+// ── naar brand tokens ─────────────────────────────────────────────
+$burgundy:  #820045;
+$lemon:     #F2E651;
+$cream:     #FBF6E9;
+$naar-text: #211218;
+
+// ── Font ──────────────────────────────────────────────────────────
+body { font-family: 'Poppins', sans-serif !important; }
+
+// ── Sidebar ───────────────────────────────────────────────────────
+.naar-sidebar {
+  background: $burgundy !important;
+  border-right: none !important;
+
+  .naar-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-decoration: none;
+    padding: 4px 0;
+    .brand-wordmark {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: $lemon;
+      letter-spacing: .04em;
+      line-height: 1;
+    }
+    .brand-tag {
+      font-size: .65rem;
+      color: rgba(#fff, .5);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+  }
+
+  .nav-link-header {
+    font-size: .65rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(#fff, .35) !important;
+    font-weight: 600;
+    padding: 8px 12px 4px;
+    display: block;
+  }
+
+  .nav-link {
+    color: rgba(#fff, .75) !important;
+    border-radius: 8px;
+    margin: 1px 8px;
+    padding: 8px 12px !important;
+    transition: background .15s, color .15s;
+    &:hover {
+      background: rgba(#fff, .1) !important;
+      color: #fff !important;
+    }
+    &.active {
+      background: rgba(#fff, .15) !important;
+      color: #fff !important;
+      font-weight: 600;
+    }
+  }
+
+  .navbar-toggler { color: #fff; border-color: rgba(#fff,.3); }
+  .border-top { border-color: rgba(#fff, .15) !important; }
+}
+
+// ── Page header ───────────────────────────────────────────────────
+.page-title { font-size: 1.25rem; font-weight: 700; color: $naar-text; }
+
+// ── Buttons override ──────────────────────────────────────────────
+.btn-primary {
+  background: $burgundy !important;
+  border-color: $burgundy !important;
+  font-weight: 600;
+  &:hover, &:focus { background: darken($burgundy, 8%) !important; border-color: darken($burgundy, 8%) !important; }
+}
+
+.btn-naar {
+  background: $burgundy !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-size: .875rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity .15s;
+  &:hover, &:focus { opacity: .88; background: $burgundy !important; color: #fff !important; }
+}
+
+// ── Cards ─────────────────────────────────────────────────────────
+.card {
+  border-radius: 12px !important;
+  border-color: #e8e0e5 !important;
+  box-shadow: 0 1px 4px rgba($naar-text, .06) !important;
+}
+
+.card-header {
+  background: #faf5f8 !important;
+  border-bottom-color: #e8e0e5 !important;
+  padding: 14px 20px !important;
+  h3, .card-title {
+    font-size: .95rem !important;
+    font-weight: 600 !important;
+    color: $naar-text !important;
+    margin: 0 !important;
+  }
+}
+
+.card-body { padding: 24px !important; }
+
+// ── Forms ─────────────────────────────────────────────────────────
+.form-label {
+  font-size: .82rem;
+  font-weight: 600;
+  color: $naar-text;
+  margin-bottom: 5px;
+}
+
+.form-control, .form-select {
+  border-color: #e8e0e5;
+  border-radius: 8px;
+  font-size: .875rem;
+  font-family: inherit;
+  color: $naar-text;
+  background-color: #fff;
+  transition: border-color .15s, box-shadow .15s;
+  &:focus {
+    border-color: $burgundy;
+    box-shadow: 0 0 0 3px rgba($burgundy, .12);
+    outline: none;
+  }
+  &::placeholder { color: #b8a8b2; }
+}
+
+textarea.form-control { resize: vertical; min-height: 90px; }
+
+.form-text {
+  font-size: .75rem;
+  color: #8c7a87;
+  margin-top: 4px;
+}
+
+// Error state
+.field_with_errors {
+  .form-control, .form-select {
+    border-color: #dc2626;
+    &:focus { box-shadow: 0 0 0 3px rgba(220, 38, 38, .12); }
+  }
+}
+
+.invalid-feedback { font-size: .78rem; }
+
+// ── Badges ────────────────────────────────────────────────────────
+.badge-flag {
+  display: inline-flex;
+  align-items: center;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  &.flag-nuevo      { background: #dbeafe; color: #1d4ed8; }
+  &.flag-oferta     { background: #fef3c7; color: #92400e; }
+  &.flag-bestseller { background: #ede9fe; color: #5b21b6; }
+  &.flag-sin_flag   { background: #f3f4f6; color: #6b7280; }
+}
+
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  &.status-active   { background: #d1fae5; color: #065f46; }
+  &.status-draft    { background: #fef3c7; color: #92400e; }
+  &.status-archived { background: #f3f4f6; color: #6b7280; }
+  &.badge-count-zero { background: #f3f4f6; color: #6b7280; }
+}
+
+.badge-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  background: #f3f4f6; color: #6b7280;
+  &.tag-lookbook { background: #dbeafe; color: #1d4ed8; }
+  &.tag-try-on   { background: #fef3c7; color: #92400e; }
+  &.tag-unboxing { background: #ede9fe; color: #5b21b6; }
+  &.tag-outfit   { background: #d1fae5; color: #065f46; }
+  &.tag-behind   { background: #fee2e2; color: #991b1b; }
+}
+
+.badge-order-status {
+  display: inline-flex;
+  align-items: center;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  &.status-pendiente_contacto { background: #f3f4f6; color: #6b7280; }
+  &.status-espera_pago        { background: #fef3c7; color: #92400e; }
+  &.status-pagada             { background: #d1fae5; color: #065f46; }
+  &.status-anulada            { background: #fee2e2; color: #991b1b; }
+}
+
+// ── Tables ────────────────────────────────────────────────────────
+.table {
+  font-size: .875rem;
+  th {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #8c7a87;
+    font-weight: 600;
+    background: #faf5f8;
+    border-bottom-width: 1px;
+  }
+  td { vertical-align: middle; }
+}
+
+// ── Actions ───────────────────────────────────────────────────────
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-sm.btn-ghost {
+  background: transparent;
+  border: 1px solid #e8e0e5;
+  color: #6c757d;
+  font-size: .8rem;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: border-color .15s, color .15s;
+  &:hover { border-color: $burgundy; color: $burgundy; }
+}
+
+.btn-sm.btn-danger-ghost {
+  background: transparent;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+  font-size: .8rem;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background .15s;
+  &:hover { background: #fef2f2; }
+}
+
+// ── Color picker ──────────────────────────────────────────────────
+.color-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  .form-control-color {
+    width: 44px;
+    height: 38px;
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid #e8e0e5;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+}
+
+.color-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,.08);
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+// ── Stat cards ────────────────────────────────────────────────────
+.stat-card {
+  .stat-num {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: $burgundy;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: .78rem;
+    color: #8c7a87;
+    margin-top: 2px;
+  }
+}
+
+// ── Section divider inside card ───────────────────────────────────
+.form-section {
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid #f0e8ed;
+  &:first-child { padding-top: 0; margin-top: 0; border-top: none; }
+  .form-section-title {
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: $burgundy;
+    margin-bottom: 16px;
+  }
+}

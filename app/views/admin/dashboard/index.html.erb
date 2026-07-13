@@ -1,0 +1,74 @@
+<% content_for :page_title, "Dashboard" %>
+<% content_for :topbar_actions do %>
+  <%= link_to new_admin_product_path, class: "btn btn-naar" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Nuevo producto
+  <% end %>
+<% end %>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-2">
+    <div class="card stat-card text-center py-3">
+      <div class="stat-num"><%= @total_products %></div>
+      <div class="stat-label">Total productos</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-2">
+    <div class="card stat-card text-center py-3">
+      <div class="stat-num"><%= @active_products %></div>
+      <div class="stat-label">Activos</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-2">
+    <div class="card stat-card text-center py-3">
+      <div class="stat-num"><%= @oferta_products %></div>
+      <div class="stat-label">En oferta</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-2">
+    <div class="card stat-card text-center py-3">
+      <div class="stat-num"><%= @total_cats %></div>
+      <div class="stat-label">Categorías</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-2">
+    <div class="card stat-card text-center py-3">
+      <div class="stat-num"><%= @total_faqs %></div>
+      <div class="stat-label">FAQs</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-2">
+    <div class="card stat-card text-center py-3">
+      <div class="stat-num"><%= @total_reels %></div>
+      <div class="stat-label">Reels</div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header"><h3 class="card-title">Almacenamiento (S3)</h3></div>
+  <div class="card-body">
+    <% if @storage_usage.available %>
+      <% percent = @storage_usage.percent_used %>
+      <div class="d-flex justify-content-between mb-1">
+        <span><%= number_to_human_size(@storage_usage.bytes_used) %> de <%= number_to_human_size(@storage_usage.limit_bytes) %> usados</span>
+        <span class="text-muted"><%= @storage_usage.object_count %> archivos · <%= percent.round(1) %>%</span>
+      </div>
+      <div class="progress" style="height:8px;">
+        <div class="progress-bar <%= percent >= 80 ? 'bg-danger' : '' %>" role="progressbar" style="width:<%= percent %>%"></div>
+      </div>
+    <% else %>
+      <span class="text-muted">Datos de almacenamiento no disponibles<%= " (#{@storage_usage.error})" if @storage_usage.error %>.</span>
+    <% end %>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header"><h3 class="card-title">Accesos rápidos</h3></div>
+  <div class="card-body d-flex gap-3 flex-wrap">
+    <%= link_to "Ver productos", admin_products_path, class: "btn btn-outline-secondary btn-sm" %>
+    <%= link_to "Nueva categoría", new_admin_category_path, class: "btn btn-outline-secondary btn-sm" %>
+    <%= link_to "Nueva FAQ", new_admin_faq_path, class: "btn btn-outline-secondary btn-sm" %>
+    <%= link_to "Nuevo reel", new_admin_reel_path, class: "btn btn-outline-secondary btn-sm" %>
+  </div>
+</div>

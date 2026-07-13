@@ -1,0 +1,55 @@
+<%= form_with model: image, multipart: true,
+      url: (image.persisted? ? admin_product_image_path(product, image) : admin_product_images_path(product)),
+      data: { controller: "direct-upload" } do |f| %>
+  <div class="card">
+    <div class="card-header"><h3 class="card-title">Datos de la imagen</h3></div>
+    <div class="card-body">
+      <% if image.errors.any? %>
+        <div class="alert alert-danger mb-4">
+          <ul class="mb-0">
+            <% image.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% if image.image.attached? %>
+        <div class="mb-3">
+          <%= image_tag image.image.variant(resize_to_limit: [ 400, 400 ]), style: "max-width:200px; border-radius:8px;" %>
+        </div>
+      <% end %>
+
+      <div class="row g-3">
+        <div class="col-md-5">
+          <%= f.label :image, "Archivo", class: "form-label" %>
+          <%= f.file_field :image, class: "form-control", accept: "image/*", direct_upload: true,
+                data: { direct_upload_target: "input" } %>
+          <div class="progress mt-2" style="display:none; height:6px;" data-direct-upload-target="progressWrap">
+            <div class="progress-bar" role="progressbar" style="width:0%" data-direct-upload-target="progressBar"></div>
+          </div>
+          <div class="form-text" data-direct-upload-target="status">
+            <%= image.image.attached? ? "Dejar vacío para mantener la imagen actual." : "" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :color_name, "Color", class: "form-label" %>
+          <%= f.select :color_name, product.variants.pluck(:color_name).uniq.compact_blank,
+                { include_blank: "Todos los colores" }, { class: "form-select" } %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :alt, "Texto alternativo", class: "form-label" %>
+          <%= f.text_field :alt, class: "form-control", placeholder: "Vestido midi Sol, vista frontal" %>
+        </div>
+        <div class="col-md-1">
+          <%= f.label :position, "Posición", class: "form-label" %>
+          <%= f.number_field :position, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-3">
+    <%= f.submit image.new_record? ? "Agregar imagen" : "Guardar cambios", class: "btn btn-naar",
+          data: { direct_upload_target: "submit" } %>
+    <%= link_to "Cancelar", edit_admin_product_path(product), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

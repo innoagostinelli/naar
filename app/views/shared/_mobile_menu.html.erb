@@ -1,0 +1,16 @@
+<div class="scrim" data-mobile-menu-target="scrim" data-action="click->mobile-menu#close"></div>
+
+<nav class="mobile-menu" data-mobile-menu-target="menu" aria-label="Menú">
+  <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
+    <button type="button" class="icon-btn" data-action="click->mobile-menu#close" aria-label="Cerrar menú">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <%= link_to "Inicio", root_path, class: "active", data: { action: "click->mobile-menu#close" } %>
+  <%= link_to "Nuevos ingresos", "#nuevos", data: { action: "click->mobile-menu#close" } %>
+  <%= link_to "Categorías", "#cats", data: { action: "click->mobile-menu#close" } %>
+  <%= link_to "FAQs", "#faqs", data: { action: "click->mobile-menu#close" } %>
+</nav>

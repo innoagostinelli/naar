@@ -1,0 +1,52 @@
+<div class="scrim" data-product-modal-target="scrim" data-action="click->product-modal#close"></div>
+
+<div class="modal" data-product-modal-target="modal" role="dialog" aria-modal="true" aria-label="Detalle del producto">
+  <button type="button" class="modal-close" data-action="product-modal#close" aria-label="Cerrar">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+
+  <div class="modal-media" data-product-modal-target="media"></div>
+
+  <div class="modal-body">
+    <span class="crumb" data-product-modal-target="category"></span>
+    <h2 data-product-modal-target="name"></h2>
+
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span class="price" data-product-modal-target="price"></span>
+      <span data-product-modal-target="comparePrice" style="display:none; text-decoration:line-through; color:var(--ink-soft);"></span>
+      <span class="modal-flag" data-product-modal-target="flag" style="display:none;"></span>
+    </div>
+
+    <p style="color:var(--ink-soft); font-size:14px; margin:0; line-height:1.6;" data-product-modal-target="description"></p>
+
+    <div data-product-modal-target="colorSection" style="display:none;">
+      <div style="font-weight:600; font-size:14px; margin-bottom:8px;">Color</div>
+      <div class="size-row" data-product-modal-target="colorRow"></div>
+    </div>
+
+    <div data-product-modal-target="sizeSection" style="display:none;">
+      <div style="font-weight:600; font-size:14px; margin-bottom:8px;">Talla</div>
+      <div class="size-row" data-product-modal-target="sizeRow"></div>
+    </div>
+
+    <div>
+      <div style="font-weight:600; font-size:14px; margin-bottom:8px;">Cantidad</div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button type="button" class="qty-btn" data-action="product-modal#decrement" aria-label="Restar">−</button>
+        <span style="min-width:24px; text-align:center; font-weight:600;" data-product-modal-target="qty">1</span>
+        <button type="button" class="qty-btn" data-action="product-modal#increment" aria-label="Sumar">+</button>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-primary" data-action="product-modal#addToCart" data-product-modal-target="addButton">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span data-product-modal-target="addButtonLabel">Agregar al carrito</span>
+      </button>
+    </div>
+  </div>
+</div>

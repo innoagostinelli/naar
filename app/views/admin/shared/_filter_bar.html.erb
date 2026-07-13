@@ -1,0 +1,24 @@
+<div class="card mb-3">
+  <div class="card-body">
+    <%= search_form_for q, url: url, html: { class: "row g-2 align-items-end" } do |f| %>
+      <% fields.each do |field| %>
+        <div class="col-6 col-md-<%= field[:col] || 3 %>">
+          <label class="form-label"><%= field[:label] %></label>
+          <% if field[:type] == :search %>
+            <%= f.search_field field[:attr], class: "form-control form-control-sm" %>
+          <% elsif field[:type] == :select && field[:plain] %>
+            <%# filtro fuera de Ransack (ej. asociaciones con scope, o atributos de ActiveStorage) %>
+            <%= select_tag field[:attr], options_for_select(field[:options], params[field[:attr]]),
+                  include_blank: "Todos", class: "form-select form-select-sm" %>
+          <% elsif field[:type] == :select %>
+            <%= f.select field[:attr], field[:options], { include_blank: "Todos" }, { class: "form-select form-select-sm" } %>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="col-12 col-md-2 d-flex gap-2">
+        <button type="submit" class="btn btn-naar btn-sm">Filtrar</button>
+        <%= link_to "Limpiar", url, class: "btn btn-outline-secondary btn-sm" %>
+      </div>
+    <% end %>
+  </div>
+</div>

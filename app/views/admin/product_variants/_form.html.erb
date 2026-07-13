@@ -1,0 +1,63 @@
+<%= form_with model: variant,
+      url: (variant.persisted? ? admin_product_variant_path(product, variant) : admin_product_variants_path(product)) do |f| %>
+  <div class="card">
+    <div class="card-header"><h3 class="card-title">Datos de la variante</h3></div>
+    <div class="card-body">
+      <% if variant.errors.any? %>
+        <div class="alert alert-danger mb-4">
+          <ul class="mb-0">
+            <% variant.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="row g-3">
+        <div class="col-md-3">
+          <%= f.label :size, "Talla", class: "form-label" %>
+          <%= f.select :size, %w[XS S M L XL XXL Único],
+                { prompt: "Seleccionar..." }, { class: "form-select" } %>
+        </div>
+
+        <div class="col-md-3">
+          <%= f.label :color_name, "Nombre del color", class: "form-label" %>
+          <%= f.text_field :color_name, class: "form-control", placeholder: "Negro" %>
+        </div>
+
+        <div class="col-md-3">
+          <%= f.label :color_hex, "Color", class: "form-label" %>
+          <div class="color-input-group">
+            <%= f.color_field :color_hex,
+                  class: "form-control form-control-color",
+                  id: "color_picker",
+                  onchange: "document.getElementById('color_hex_text').value=this.value" %>
+            <%= f.text_field :color_hex,
+                  class: "form-control",
+                  placeholder: "#211218",
+                  id: "color_hex_text",
+                  onchange: "document.getElementById('color_picker').value=this.value" %>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <%= f.label :sku, "SKU", class: "form-label" %>
+          <%= f.text_field :sku, class: "form-control", placeholder: "Opcional" %>
+        </div>
+
+        <div class="col-md-1">
+          <%= f.label :stock, "Stock", class: "form-label" %>
+          <%= f.number_field :stock, class: "form-control" %>
+          <div class="form-text">Vacío = sin control</div>
+        </div>
+      </div>
+
+      <div class="form-text mt-2">
+        Las fotos de este color se administran desde la sección "Imágenes" del producto.
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-3">
+    <%= f.submit variant.new_record? ? "Agregar variante" : "Guardar cambios", class: "btn btn-naar" %>
+    <%= link_to "Cancelar", edit_admin_product_path(product), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

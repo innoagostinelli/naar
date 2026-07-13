@@ -1,0 +1,6 @@
+<% content_for :page_title, "Nueva imagen — #{@product.name}" %>
+
+<div class="admin-card">
+  <h2>Nueva imagen</h2>
+  <%= render "form", product: @product, image: @image %>
+</div>

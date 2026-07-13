@@ -1,0 +1,116 @@
+<% content_for :page_title, "Pedidos" %>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3">
+    <div class="card stat-card text-center py-3">
+      <div class="stat-num"><%= @stats[:total_orders] %></div>
+      <div class="stat-label">Pedidos</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="card stat-card text-center py-3">
+      <div class="stat-num">$<%= number_with_delimiter(@stats[:total_sales].to_i) %></div>
+      <div class="stat-label">Ventas (pagadas)</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="card stat-card text-center py-3">
+      <div class="stat-num"><%= @stats[:pendiente_contacto] %></div>
+      <div class="stat-label">Pendientes de contacto</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="card stat-card text-center py-3">
+      <div class="stat-num"><%= @stats[:espera_pago] %></div>
+      <div class="stat-label">En espera de pago</div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <%= form_with url: admin_orders_path, method: :get, local: true, class: "row g-2 align-items-end" do %>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Desde</label>
+        <input type="date" name="date_from" value="<%= params[:date_from] %>" class="form-control form-control-sm">
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label">Hasta</label>
+        <input type="date" name="date_to" value="<%= params[:date_to] %>" class="form-control form-control-sm">
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label">Entrega</label>
+        <select name="fulfillment_method" class="form-select form-select-sm">
+          <option value="">Todos</option>
+          <% Order.fulfillment_methods.keys.each do |key| %>
+            <option value="<%= key %>" <%= "selected" if params[:fulfillment_method] == key %>>
+              <%= key == "delivery" ? "Delivery" : "Retiro en tienda" %>
+            </option>
+          <% end %>
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label">Estado</label>
+        <select name="status" class="form-select form-select-sm">
+          <option value="">Todos</option>
+          <% Order::STATUS_LABELS.each do |key, label| %>
+            <option value="<%= key %>" <%= "selected" if params[:status] == key %>><%= label %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="col-12 col-md-2 d-flex gap-2">
+        <button type="submit" class="btn btn-naar btn-sm">Filtrar</button>
+        <%= link_to "Limpiar", admin_orders_path, class: "btn btn-outline-secondary btn-sm" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-vcenter table-hover card-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Fecha</th>
+          <th>Cliente</th>
+          <th>Entrega</th>
+          <th>Ítems</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr>
+            <td class="fw-semibold">#<%= order.id %></td>
+            <td class="text-muted"><%= order.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+            <td class="text-muted"><%= order.customer_name %></td>
+            <td class="text-muted"><%= order.delivery? ? "Delivery" : "Retiro" %></td>
+            <td class="text-muted"><%= order.order_items.sum(:qty) %></td>
+            <td>$<%= number_with_delimiter(order.total.to_i) %></td>
+            <td>
+              <%= form_with model: [ :admin, order ], method: :patch, data: { controller: "auto-submit" } do |f| %>
+                <%= f.select :status, Order::STATUS_LABELS.map { |key, label| [ label, key ] },
+                      { selected: order.status },
+                      { class: "form-select form-select-sm badge-order-status status-#{order.status}",
+                        data: { action: "change->auto-submit#submit" } } %>
+              <% end %>
+            </td>
+            <td>
+              <div class="admin-actions justify-content-end">
+                <%= link_to "Ver detalle", admin_order_path(order), class: "btn btn-sm btn-ghost" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+        <% if @orders.empty? %>
+          <tr>
+            <td colspan="8" class="text-center text-muted py-4">No hay pedidos con estos filtros.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

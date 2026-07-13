@@ -1,0 +1,47 @@
+<div class="product-card"
+     role="button" tabindex="0"
+     data-action="click->product-modal#open keydown.enter->product-modal#open"
+     data-product="<%= product_modal_data(product).to_json %>">
+  <% gallery = product.cover_gallery.select { |img| img.image.attached? } %>
+  <div class="product-media" data-controller="card-carousel"
+       data-action="mouseenter->card-carousel#start mouseleave->card-carousel#stop">
+    <% gallery.each_with_index do |img, i| %>
+      <%= image_tag img.image.variant(resize_to_fill: [ 600, 800 ]), alt: img.alt.presence || product.name,
+            class: "media-carousel-slide #{'is-active' if i.zero?}", data: { card_carousel_target: "slide" } %>
+    <% end %>
+    <% if product.flag.present? && !product.sin_flag? %>
+      <span class="product-flag <%= 'flag-oferta' if product.oferta? %><%= ' flag-bestseller' if product.bestseller? %>">
+        <%= product.flag_label %>
+      </span>
+    <% end %>
+    <button class="product-fav" aria-label="Agregar a favoritos" type="button" data-action="product-modal#stop">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </button>
+  </div>
+  <div class="product-body">
+    <h3 class="product-name"><%= product.name %></h3>
+    <div class="product-meta">
+      <div class="product-price">
+        $<%= number_with_delimiter(product.price.to_i) %>
+        <% if product.on_sale? %>
+          <small>$<%= number_with_delimiter(product.compare_at_price.to_i) %></small>
+        <% end %>
+      </div>
+      <button class="add-btn" aria-label="Agregar al carrito" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/>
+        </svg>
+      </button>
+    </div>
+    <% swatches = product.swatches %>
+    <% if swatches.any? %>
+      <div class="product-swatches">
+        <% swatches.each do |s| %>
+          <span class="swatch" style="background:<%= s[:hex] %>;" title="<%= s[:name] %>"></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

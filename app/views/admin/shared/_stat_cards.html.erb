@@ -1,0 +1,10 @@
+<div class="row g-3 mb-4">
+  <% cards.each do |card| %>
+    <div class="col-6 col-lg-<%= 12 / cards.size %>">
+      <div class="card stat-card text-center py-3">
+        <div class="stat-num"><%= card[:value] %></div>
+        <div class="stat-label"><%= card[:label] %></div>
+      </div>
+    </div>
+  <% end %>
+</div>

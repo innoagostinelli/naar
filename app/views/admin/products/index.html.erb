@@ -1,0 +1,67 @@
+<% content_for :page_title, "Productos" %>
+<% content_for :topbar_actions do %>
+  <%= link_to new_admin_product_path, class: "btn btn-naar" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Nuevo producto
+  <% end %>
+<% end %>
+
+<%= render "admin/shared/stat_cards", cards: @stats %>
+
+<%= render "admin/shared/filter_bar", q: @q, url: admin_products_path, fields: [
+  { attr: :name_cont, type: :search, label: "Buscar", col: 3 },
+  { attr: :category_id_eq, type: :select, label: "Categoría", col: 3,
+    options: Category.order(:position).pluck(:name, :id) },
+  { attr: :flag_eq, type: :select, label: "Flag", col: 2,
+    options: Product.flags.map { |k, v| [ k.humanize, v ] } },
+  { attr: :status_eq, type: :select, label: "Estado", col: 2,
+    options: Product.statuses.map { |k, v| [ k.humanize, v ] } },
+] %>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-vcenter table-hover card-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Flag</th>
+          <th>Estado</th>
+          <th class="text-center w-1">Pos.</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @products.each do |product| %>
+          <tr>
+            <td class="fw-semibold"><%= product.name %></td>
+            <td class="text-muted"><%= product.category.name %></td>
+            <td>$<%= number_with_delimiter(product.price.to_i) %></td>
+            <td><span class="badge-flag flag-<%= product.flag %>"><%= product.flag %></span></td>
+            <td><span class="badge-status status-<%= product.status %>"><%= product.status %></span></td>
+            <td class="text-center text-muted"><%= product.position %></td>
+            <td>
+              <div class="admin-actions justify-content-end">
+                <%= link_to "Editar", edit_admin_product_path(product), class: "btn btn-sm btn-ghost" %>
+                <%= button_to "Eliminar", admin_product_path(product),
+                      method: :delete,
+                      form: { data: { turbo_confirm: "¿Eliminar #{product.name}?" } },
+                      class: "btn btn-sm btn-danger-ghost" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+        <% if @products.empty? %>
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">No hay productos con estos filtros.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center mt-3">
+  <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
+</div>
