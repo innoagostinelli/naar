@@ -19,7 +19,7 @@ class StorageUsageService
   end
 
   def call
-    return Result.new(available: false) unless amazon_service?
+    return Result.new(available: false) unless r2_service?
 
     cached = Rails.cache.read(CACHE_KEY)
     return cached if cached
@@ -31,12 +31,12 @@ class StorageUsageService
 
   private
 
-  def amazon_service?
-    ActiveStorage::Blob.service.name.to_s == "amazon"
+  def r2_service?
+    ActiveStorage::Blob.service.name.to_s == "r2"
   end
 
   def fetch_from_s3
-    service = ActiveStorage::Blob.services.fetch(:amazon)
+    service = ActiveStorage::Blob.services.fetch(:r2)
 
     bytes_used = 0
     object_count = 0
