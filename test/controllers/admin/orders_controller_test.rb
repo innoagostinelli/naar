@@ -3,7 +3,7 @@ require "test_helper"
 class Admin::OrdersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @credentials = ActionController::HttpAuthentication::Basic.encode_credentials(
-      ENV.fetch("ADMIN_USER", "naar_admin"), ENV.fetch("ADMIN_PASS", "naar2026!")
+      Admin::BaseController::ADMIN_USER, Admin::BaseController::ADMIN_PASS
     )
   end
 
