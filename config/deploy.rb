@@ -29,7 +29,9 @@ set :keep_releases, 5
 # Puma via systemd
 set :puma_systemctl_user, :user
 set :puma_service_unit_name, "puma_#{fetch(:application)}"
-set :puma_conf, "#{shared_path}/config/puma.rb"
+# capistrano3-puma no inyecta -C/-b en el ExecStart; el bind se controla desde
+# config/puma.rb del propio repo, leyendo esta env var (ver PUMA_BIND ahí).
+set :puma_service_unit_env_vars, -> { ["PUMA_BIND=unix://#{shared_path}/tmp/sockets/puma.sock"] }
 # El linger ya se habilitó a mano una vez en el servidor (loginctl enable-linger deploy),
 # así evitamos que capistrano3-puma intente correrlo vía sudo en cada `puma:enable`.
 set :puma_enable_lingering, false
