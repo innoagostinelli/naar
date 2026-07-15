@@ -30,3 +30,6 @@ set :keep_releases, 5
 set :puma_systemctl_user, :user
 set :puma_service_unit_name, "puma_#{fetch(:application)}"
 set :puma_conf, "#{shared_path}/config/puma.rb"
+# El linger ya se habilitó a mano una vez en el servidor (loginctl enable-linger deploy),
+# así evitamos que capistrano3-puma intente correrlo vía sudo en cada `puma:enable`.
+set :puma_enable_lingering, false
