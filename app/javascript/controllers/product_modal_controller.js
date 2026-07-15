@@ -141,7 +141,6 @@ export default class extends Controller {
       btn.type = "button"
       btn.className = `size-pill ${s.name === this.color ? "is-active" : ""}`
       btn.textContent = s.name
-      btn.style.borderLeft = `4px solid ${s.hex}`
       btn.dataset.action = "product-modal#selectColor"
       btn.dataset.color = s.name
       this.colorRowTarget.appendChild(btn)
