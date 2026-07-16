@@ -11,7 +11,7 @@ gem "bootsnap", require: false
 gem "image_processing", "~> 1.2"
 gem "aws-sdk-s3", require: false
 gem "ransack"
-gem "pagy", "~> 9.4"
+gem "pagy", "~> 43.6"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootstrap", "~> 5.3"
 gem "sassc-rails", "~> 2.1"
