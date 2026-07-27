@@ -1,0 +1,24 @@
+<% if turbo_frame_request? %>
+  <%= turbo_frame_tag "search_preview_frame" do %>
+    <%= render "search/results", products: @products, query: @query, total: @total, preview: true %>
+  <% end %>
+<% else %>
+  <% content_for :title, @query.present? ? "Resultados para “#{@query}” — naar" : "Buscar — naar" %>
+  <section class="section shell search-results-page">
+    <div class="section-head">
+      <h1 class="section-title">
+        <% if @query.present? %>
+          Resultados para &ldquo;<%= @query %>&rdquo; <span class="search-results-count">(<%= @total %>)</span>
+        <% else %>
+          Buscar productos
+        <% end %>
+      </h1>
+    </div>
+
+    <%= form_with url: search_path, method: :get, class: "search-page-form" do |f| %>
+      <%= f.text_field :q, value: @query, placeholder: "Buscar Productos", autofocus: true %>
+    <% end %>
+
+    <%= render "search/results", products: @products, query: @query, total: @total, preview: false %>
+  </section>
+<% end %>

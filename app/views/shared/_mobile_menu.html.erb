@@ -10,7 +10,7 @@
   </div>
 
   <%= link_to "Inicio", root_path, class: "active", data: { action: "click->mobile-menu#close" } %>
-  <%= link_to "Nuevos ingresos", "#nuevos", data: { action: "click->mobile-menu#close" } %>
-  <%= link_to "Categorías", "#cats", data: { action: "click->mobile-menu#close" } %>
-  <%= link_to "FAQs", "#faqs", data: { action: "click->mobile-menu#close" } %>
+  <%= link_to "Nuevos ingresos", root_path(anchor: "nuevos"), data: { action: "click->mobile-menu#close" } %>
+  <%= link_to "Categorías", root_path(anchor: "cats"), data: { action: "click->mobile-menu#close" } %>
+  <%= link_to "FAQs", root_path(anchor: "faqs"), data: { action: "click->mobile-menu#close" } %>
 </nav>

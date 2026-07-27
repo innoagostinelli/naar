@@ -1,0 +1,17 @@
+<% if query.blank? %>
+  <p class="search-placeholder">Busca tu próxima prenda favorita</p>
+<% elsif products.empty? %>
+  <p class="search-placeholder">No encontramos resultados para &ldquo;<%= query %>&rdquo;.</p>
+<% else %>
+  <div class="products">
+    <% products.each do |product| %>
+      <%= render "shared/product_card", product: product %>
+    <% end %>
+  </div>
+  <% if preview %>
+    <div class="search-view-all">
+      <%= link_to "Ver todos los resultados (#{total})", search_path(q: query), class: "see-all",
+            data: { turbo_frame: "_top", action: "click->search#close" } %>
+    </div>
+  <% end %>
+<% end %>

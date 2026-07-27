@@ -56,7 +56,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body data-controller="product-modal cart mobile-menu" data-action="keydown.esc@window->product-modal#close keydown.esc@window->cart#close keydown.esc@window->mobile-menu#close">
+  <body data-controller="product-modal cart mobile-menu search" data-action="keydown.esc@window->product-modal#close keydown.esc@window->cart#close keydown.esc@window->mobile-menu#close keydown.esc@window->search#close">
 
     <%# Announcement bar %>
     <div class="ann">
@@ -69,9 +69,9 @@
 
         <nav class="site-nav desktop" aria-label="Categorías">
           <%= link_to "Inicio", root_path, class: "active" %>
-          <%= link_to "Nuevos ingresos", "#nuevos" %>
-          <%= link_to "Categorías", "#cats" %>
-          <%= link_to "FAQs", "#faqs" %>
+          <%= link_to "Nuevos ingresos", root_path(anchor: "nuevos") %>
+          <%= link_to "Categorías", root_path(anchor: "cats") %>
+          <%= link_to "FAQs", root_path(anchor: "faqs") %>
         </nav>
 
         <div class="brand-logo">
@@ -81,7 +81,7 @@
         </div>
 
         <div class="header-actions">
-          <button class="icon-btn" aria-label="Buscar">
+          <button class="icon-btn" aria-label="Buscar" data-action="click->search#open">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
             </svg>
@@ -148,10 +148,10 @@
           <div>
             <h5>Tienda</h5>
             <ul>
-              <li><a href="#nuevos">Lo nuevo</a></li>
-              <li><a href="#cats">Todas las categorías</a></li>
+              <li><a href="<%= root_path(anchor: "nuevos") %>">Lo nuevo</a></li>
+              <li><a href="<%= root_path(anchor: "cats") %>">Todas las categorías</a></li>
               <% @categories&.each do |cat| %>
-                <li><a href="#cat-section-<%= cat.slug %>"><%= cat.name %></a></li>
+                <li><a href="<%= root_path(anchor: "cat-section-#{cat.slug}") %>"><%= cat.name %></a></li>
               <% end %>
             </ul>
           </div>
@@ -159,11 +159,11 @@
           <div>
             <h5>Ayuda</h5>
             <ul>
-              <li><a href="#faqs">Preguntas frecuentes</a></li>
-              <li><a href="#faqs">Cómo comprar</a></li>
-              <li><a href="#faqs">Envíos y entregas</a></li>
-              <li><a href="#faqs">Cambios</a></li>
-              <li><a href="#faqs">Formas de pago</a></li>
+              <li><a href="<%= root_path(anchor: "faqs") %>">Preguntas frecuentes</a></li>
+              <li><a href="<%= root_path(anchor: "faqs") %>">Cómo comprar</a></li>
+              <li><a href="<%= root_path(anchor: "faqs") %>">Envíos y entregas</a></li>
+              <li><a href="<%= root_path(anchor: "faqs") %>">Cambios</a></li>
+              <li><a href="<%= root_path(anchor: "faqs") %>">Formas de pago</a></li>
             </ul>
           </div>
 
@@ -195,6 +195,7 @@
     <%= render "shared/product_modal" %>
     <%= render "shared/cart_drawer" %>
     <%= render "shared/mobile_menu" %>
+    <%= render "shared/search_overlay" %>
 
   </body>
 </html>

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :orders, only: [ :create ]
+  get "buscar", to: "search#index", as: :search
 
   namespace :admin do
     root "dashboard#index"

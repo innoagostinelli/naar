@@ -3,3 +3,16 @@ remera:
   category: ropa
   price: 25.00
   status: active
+
+vestido:
+  name: Vestido Floreado
+  description: Ideal para combinar con sandalias en primavera.
+  category: ropa
+  price: 40.00
+  status: active
+
+body_borrador:
+  name: Body Encaje
+  category: ropa
+  price: 18.00
+  status: draft
