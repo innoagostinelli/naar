@@ -29,7 +29,11 @@ class Order < ApplicationRecord
   validate :city_belongs_to_state, if: :delivery?
 
   after_update :adjust_stock_for_status_change, if: :saved_change_to_status?
-  after_create :send_new_order_notification
+  # _commit (no after_create): el job de email corre en otro hilo (Async
+  # adapter) y busca la orden por GlobalID — si se encola antes de que la
+  # transacción del create haga commit, el hilo del job no la encuentra
+  # todavía (ActiveJob::DeserializationError) y el mail nunca sale.
+  after_create_commit :send_new_order_notification
 
   def to_param
     token
