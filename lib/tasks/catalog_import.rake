@@ -36,7 +36,7 @@ namespace :catalog do
           status:   :draft
         )
 
-        ProductVariant.create!(product: product, size: "Única", stock: 0)
+        ProductVariant.create!(product: product, size: "Único", stock: 0)
 
         if entry[:image_path].present?
           image = ProductImage.create!(product: product)

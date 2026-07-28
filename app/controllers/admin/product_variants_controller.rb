@@ -3,7 +3,7 @@ class Admin::ProductVariantsController < Admin::BaseController
   before_action :set_variant, only: [ :edit, :update, :destroy ]
 
   def new
-    @variant = @product.variants.new
+    @variant = @product.variants.new(duplicate_source&.attributes&.except("id", "created_at", "updated_at") || {})
   end
 
   def create
@@ -39,6 +39,10 @@ class Admin::ProductVariantsController < Admin::BaseController
 
   def set_variant
     @variant = @product.variants.find(params[:id])
+  end
+
+  def duplicate_source
+    @product.variants.find_by(id: params[:duplicate_from])
   end
 
   def variant_params
