@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root "dashboard#index"
     resources :products do
-      resources :variants, only: [ :new, :create, :edit, :update, :destroy ],
+      resources :variants, only: [ :create, :update, :destroy ],
                            controller: "product_variants"
       resources :images, only: [ :new, :create, :edit, :update, :destroy ],
                          controller: "product_images"

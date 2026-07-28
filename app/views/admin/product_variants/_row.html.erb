@@ -1,0 +1,31 @@
+<tr data-variant-rows-target="displayRow" data-variant-id="<%= variant.id %>">
+  <td>
+    <div class="d-flex align-items-center gap-2">
+      <span class="color-dot" style="background:<%= variant.color_hex %>;"></span>
+      <div>
+        <div class="fw-semibold"><%= variant.color_name %></div>
+        <div class="text-muted" style="font-size:.74rem;"><%= variant.color_hex %></div>
+      </div>
+    </div>
+  </td>
+  <td><span class="badge bg-light text-dark"><%= variant.size %></span></td>
+  <td class="text-muted"><%= variant.sku.presence || "—" %></td>
+  <td>
+    <% if variant.stock.nil? %>
+      <span class="text-muted">Sin control</span>
+    <% elsif variant.stock == 0 %>
+      <span class="text-danger fw-semibold">Agotado</span>
+    <% else %>
+      <%= variant.stock %>
+    <% end %>
+  </td>
+  <td>
+    <div class="admin-actions justify-content-end">
+      <button type="button" class="btn btn-sm btn-ghost" data-action="variant-rows#edit" data-variant-id="<%= variant.id %>">Editar</button>
+      <%= button_to "Eliminar", admin_product_variant_path(product, variant),
+            method: :delete,
+            form: { data: { turbo_confirm: "¿Eliminar variante #{variant.display_name}?" } },
+            class: "btn btn-sm btn-danger-ghost" %>
+    </div>
+  </td>
+</tr>
