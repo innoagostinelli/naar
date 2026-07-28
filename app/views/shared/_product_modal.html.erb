@@ -36,7 +36,8 @@
       <div style="display:flex; align-items:center; gap:12px;">
         <button type="button" class="qty-btn" data-action="product-modal#decrement" aria-label="Restar">−</button>
         <span style="min-width:24px; text-align:center; font-weight:600;" data-product-modal-target="qty">1</span>
-        <button type="button" class="qty-btn" data-action="product-modal#increment" aria-label="Sumar">+</button>
+        <button type="button" class="qty-btn" data-action="product-modal#increment" data-product-modal-target="incrementBtn" aria-label="Sumar">+</button>
+        <span style="font-size:12px; color:var(--ink-soft);" data-product-modal-target="stockHint"></span>
       </div>
     </div>
 

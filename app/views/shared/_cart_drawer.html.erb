@@ -104,6 +104,9 @@
 
     <script type="application/json" data-cart-target="locationsData"><%= raw locations_data.to_json %></script>
 
+    <p class="delivery-note" data-cart-target="deliveryNote" style="display:none;">
+      El envío no está incluido — el total puede variar según tu ubicación, te lo confirmamos por WhatsApp.
+    </p>
     <div class="totals-row"><span>Subtotal</span><span data-cart-target="subtotal"></span></div>
     <div class="totals-grand"><span>Total</span><span data-cart-target="total"></span></div>
     <button type="button" class="btn-wa" style="width:100%;" data-action="click->cart#checkout">

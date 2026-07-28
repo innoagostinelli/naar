@@ -13,6 +13,13 @@
   </div>
 <% end %>
 
+<% if @espera_pago.positive? %>
+  <div class="alert alert-info mb-4" role="alert">
+    Tienes <%= @espera_pago %> <%= @espera_pago == 1 ? "orden esperando" : "órdenes esperando" %> el pago.
+    <%= link_to "Ver pedidos", admin_orders_path(status: "espera_pago"), class: "alert-link" %>
+  </div>
+<% end %>
+
 <div class="row g-3 mb-4">
   <div class="col-6 col-lg-2">
     <div class="card stat-card text-center py-3">
@@ -67,6 +74,26 @@
     <% else %>
       <span class="text-muted">Datos de almacenamiento no disponibles<%= " (#{@storage_usage.error})" if @storage_usage.error %>.</span>
     <% end %>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header"><h3 class="card-title">Envíos de email (Resend)</h3></div>
+  <div class="card-body">
+    <div class="d-flex justify-content-between mb-1">
+      <span>Hoy</span>
+      <span class="text-muted"><%= @email_quota.daily_used %> de <%= @email_quota.daily_limit %> · <%= @email_quota.daily_percent.round(1) %>%</span>
+    </div>
+    <div class="progress mb-3" style="height:8px;">
+      <div class="progress-bar <%= @email_quota.daily_percent >= 80 ? 'bg-danger' : '' %>" role="progressbar" style="width:<%= @email_quota.daily_percent %>%"></div>
+    </div>
+    <div class="d-flex justify-content-between mb-1">
+      <span>Este mes</span>
+      <span class="text-muted"><%= @email_quota.monthly_used %> de <%= @email_quota.monthly_limit %> · <%= @email_quota.monthly_percent.round(1) %>%</span>
+    </div>
+    <div class="progress" style="height:8px;">
+      <div class="progress-bar <%= @email_quota.monthly_percent >= 80 ? 'bg-danger' : '' %>" role="progressbar" style="width:<%= @email_quota.monthly_percent %>%"></div>
+    </div>
   </div>
 </div>
 

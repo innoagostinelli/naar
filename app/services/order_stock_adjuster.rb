@@ -17,7 +17,7 @@ class OrderStockAdjuster
     unmatched_items = []
 
     order.order_items.each do |item|
-      variant = find_variant(item)
+      variant = item.matching_variant
 
       if variant.nil?
         unmatched_items << item
@@ -39,12 +39,6 @@ class OrderStockAdjuster
     return :restore  if from == "pagada" && to == "anulada"
 
     nil
-  end
-
-  def find_variant(item)
-    return nil if item.product_id.nil?
-
-    ProductVariant.find_by(product_id: item.product_id, size: item.size, color_name: item.color)
   end
 
   def adjust_stock(variant, qty)

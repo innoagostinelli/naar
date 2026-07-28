@@ -7,7 +7,7 @@ const CHECKOUT_INFO_KEY = "naar_checkout_info"
 export default class extends Controller {
   static targets = [
     "scrim", "drawer", "items", "empty", "foot", "count", "subtotal", "total", "badge", "checkoutLabel",
-    "form", "customerName", "customerPhone", "addressSection", "address", "country", "state", "city", "locationsData",
+    "form", "customerName", "customerPhone", "addressSection", "deliveryNote", "address", "country", "state", "city", "locationsData",
     "itemsSummary", "customerSummary", "addressSummary",
   ]
 
@@ -104,16 +104,24 @@ export default class extends Controller {
     plusBtn.textContent = "+"
     plusBtn.dataset.action = "cart#incrementItem"
     plusBtn.dataset.index = index
+    plusBtn.disabled = item.stock != null && item.qty >= item.stock
 
     const removeBtn = document.createElement("button")
     removeBtn.type = "button"
+    removeBtn.className = "cart-remove-btn"
     removeBtn.textContent = "Quitar"
-    removeBtn.style.cssText = "margin-left:12px; font-size:12px; color:var(--ink-soft); text-decoration:underline;"
     removeBtn.dataset.action = "cart#removeItem"
     removeBtn.dataset.index = index
 
     qtyRow.append(minusBtn, qtySpan, plusBtn, removeBtn)
     info.appendChild(qtyRow)
+
+    if (item.stock != null && item.stock <= 5) {
+      const hint = document.createElement("p")
+      hint.className = "cart-stock-hint"
+      hint.textContent = `Quedan ${item.stock}`
+      info.appendChild(hint)
+    }
 
     const price = document.createElement("div")
     price.className = "cart-price"
@@ -134,7 +142,10 @@ export default class extends Controller {
   mutateQty(event, delta) {
     const cart = readCart()
     const index = Number(event.currentTarget.dataset.index)
-    cart[index].qty = Math.max(1, cart[index].qty + delta)
+    const item = cart[index]
+    let qty = Math.max(1, item.qty + delta)
+    if (item.stock != null) qty = Math.min(qty, Math.max(item.stock, 1))
+    item.qty = qty
     writeCart(cart)
     this.render()
   }
@@ -160,6 +171,7 @@ export default class extends Controller {
   toggleFulfillment(event) {
     const isDelivery = event.target.value === "delivery"
     this.addressSectionTarget.style.display = isDelivery ? "" : "none"
+    this.deliveryNoteTarget.style.display = isDelivery ? "" : "none"
     this.addressTarget.required = isDelivery
     this.stateTarget.required = isDelivery
     this.cityTarget.required = isDelivery
@@ -287,6 +299,7 @@ export default class extends Controller {
         radio.checked = true
         const isDelivery = info.fulfillment === "delivery"
         this.addressSectionTarget.style.display = isDelivery ? "" : "none"
+        this.deliveryNoteTarget.style.display = isDelivery ? "" : "none"
         this.addressTarget.required = isDelivery
         this.stateTarget.required = isDelivery
         this.cityTarget.required = isDelivery

@@ -1,0 +1,60 @@
+<div style="font-family: -apple-system, Helvetica, Arial, sans-serif; color: #1a1a1a; max-width: 560px; margin: 0 auto; padding: 24px;">
+  <h1 style="color: #7a1f4b; font-size: 20px; margin: 0 0 4px;">Nueva orden en naar</h1>
+  <p style="color: #555; font-size: 14px; margin: 0 0 20px;">
+    Se generó una nueva orden el <%= @order.created_at.strftime("%d/%m/%Y a las %H:%M") %>.
+  </p>
+
+  <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 14px;">
+    <tr>
+      <td style="padding: 4px 0; color: #777; width: 120px;">Cliente</td>
+      <td style="padding: 4px 0; font-weight: 600;"><%= @order.customer_name %></td>
+    </tr>
+    <tr>
+      <td style="padding: 4px 0; color: #777;">Teléfono</td>
+      <td style="padding: 4px 0; font-weight: 600;"><%= @order.customer_phone %></td>
+    </tr>
+    <tr>
+      <td style="padding: 4px 0; color: #777;">Entrega</td>
+      <td style="padding: 4px 0; font-weight: 600;">
+        <%= @order.delivery? ? "Delivery" : "Retiro en tienda" %>
+      </td>
+    </tr>
+    <% if @order.delivery? %>
+      <tr>
+        <td style="padding: 4px 0; color: #777;">Dirección</td>
+        <td style="padding: 4px 0;">
+          <%= [ @order.address, @order.city&.name, @order.state&.name ].compact_blank.join(", ") %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+
+  <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px;">
+    <thead>
+      <tr style="border-bottom: 1px solid #ddd; text-align: left; color: #777;">
+        <th style="padding: 6px 4px; font-weight: 600;">Producto</th>
+        <th style="padding: 6px 4px; font-weight: 600;">Talla / Color</th>
+        <th style="padding: 6px 4px; font-weight: 600; text-align: center;">Cant.</th>
+        <th style="padding: 6px 4px; font-weight: 600; text-align: right;">Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @order.order_items.each do |item| %>
+        <tr style="border-bottom: 1px solid #f0f0f0;">
+          <td style="padding: 6px 4px;"><%= item.name %></td>
+          <td style="padding: 6px 4px; color: #777;"><%= [ item.size, item.color ].compact_blank.join(" / ").presence || "—" %></td>
+          <td style="padding: 6px 4px; text-align: center;"><%= item.qty %></td>
+          <td style="padding: 6px 4px; text-align: right;">$<%= number_with_delimiter(item.subtotal.to_i) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p style="text-align: right; font-size: 16px; font-weight: 700; color: #7a1f4b; margin: 0 0 24px;">
+    Total: $<%= number_with_delimiter(@order.total.to_i) %>
+  </p>
+
+  <a href="<%= admin_order_url(@order) %>" style="display: inline-block; background: #7a1f4b; color: #ffffff; text-decoration: none; padding: 12px 22px; border-radius: 999px; font-weight: 600; font-size: 14px;">
+    Ver la orden en el panel de administración
+  </a>
+</div>

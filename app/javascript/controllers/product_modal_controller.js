@@ -5,7 +5,7 @@ export default class extends Controller {
   static targets = [
     "scrim", "modal", "media", "category", "name", "price", "comparePrice",
     "flag", "description", "colorSection", "colorRow", "sizeSection", "sizeRow",
-    "qty", "addButton", "addButtonLabel",
+    "qty", "addButton", "addButtonLabel", "stockHint", "incrementBtn",
   ]
 
   connect() {
@@ -25,6 +25,8 @@ export default class extends Controller {
     this.size = this.product.sizes.includes("M") ? "M" : (this.product.sizes[0] || null)
     const swatches = this.product.swatches || []
     this.color = swatches.length ? swatches[0].name : null
+
+    this.qty = Math.min(this.qty, this.stockFor(this.size, this.color) ?? Infinity) || 1
 
     this.categoryTarget.textContent = this.product.category
     this.nameTarget.textContent = this.product.name
@@ -137,9 +139,10 @@ export default class extends Controller {
     this.colorSectionTarget.style.display = swatches.length ? "" : "none"
     this.colorRowTarget.innerHTML = ""
     swatches.forEach((s) => {
+      const stock = this.stockFor(this.size, s.name)
       const btn = document.createElement("button")
       btn.type = "button"
-      btn.className = `size-pill ${s.name === this.color ? "is-active" : ""}`
+      btn.className = `size-pill ${s.name === this.color ? "is-active" : ""} ${stock === 0 ? "is-unavailable" : ""}`
       btn.textContent = s.name
       btn.dataset.action = "product-modal#selectColor"
       btn.dataset.color = s.name
@@ -149,10 +152,10 @@ export default class extends Controller {
 
   selectColor(event) {
     this.color = event.currentTarget.dataset.color
-    this.colorRowTarget.querySelectorAll(".size-pill").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.dataset.color === this.color)
-    })
+    this.renderColors()
+    this.renderSizes()
     this.renderMedia()
+    this.clampQtyToStock()
     this.updatePrice()
   }
 
@@ -160,9 +163,10 @@ export default class extends Controller {
     this.sizeSectionTarget.style.display = this.product.sizes.length ? "" : "none"
     this.sizeRowTarget.innerHTML = ""
     this.product.sizes.forEach((s) => {
+      const stock = this.stockFor(s, this.color)
       const btn = document.createElement("button")
       btn.type = "button"
-      btn.className = `size-pill ${s === this.size ? "is-active" : ""}`
+      btn.className = `size-pill ${s === this.size ? "is-active" : ""} ${stock === 0 ? "is-unavailable" : ""}`
       btn.textContent = s
       btn.dataset.action = "product-modal#selectSize"
       btn.dataset.size = s
@@ -172,14 +176,29 @@ export default class extends Controller {
 
   selectSize(event) {
     this.size = event.currentTarget.dataset.size
-    this.sizeRowTarget.querySelectorAll(".size-pill").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.dataset.size === this.size)
-    })
+    this.renderSizes()
+    this.renderColors()
+    this.clampQtyToStock()
     this.updatePrice()
   }
 
+  // Stock de la variante actualmente seleccionada (talla + color). `null`/`undefined`
+  // significa que no se trackea stock para esa variante (sin límite).
+  stockFor(size, color) {
+    const variants = this.product.variants || []
+    const match = variants.find((v) => v.size === size && v.color === color)
+    return match ? match.stock : null
+  }
+
+  clampQtyToStock() {
+    const stock = this.stockFor(this.size, this.color)
+    if (stock != null) this.qty = Math.min(this.qty, Math.max(stock, 1))
+    this.renderQty()
+  }
+
   increment() {
-    this.qty += 1
+    const stock = this.stockFor(this.size, this.color)
+    if (stock == null || this.qty < stock) this.qty += 1
     this.renderQty()
     this.updatePrice()
   }
@@ -192,21 +211,36 @@ export default class extends Controller {
 
   renderQty() {
     this.qtyTarget.textContent = this.qty
+
+    const stock = this.stockFor(this.size, this.color)
+    const outOfStock = stock != null && stock <= 0
+
+    if (this.hasStockHintTarget) {
+      this.stockHintTarget.textContent = outOfStock ? "Sin stock" : (stock != null && stock <= 5 ? `Quedan ${stock}` : "")
+    }
+    if (this.hasAddButtonTarget) this.addButtonTarget.disabled = outOfStock
+    if (this.hasIncrementBtnTarget) this.incrementBtnTarget.disabled = stock != null && this.qty >= stock
   }
 
   updatePrice() {
     const total = this.product.price * this.qty
+    const stock = this.stockFor(this.size, this.color)
 
     this.priceTarget.textContent = `$${this.formatPrice(this.product.price)}`
-    this.addButtonLabelTarget.textContent = `Agregar al carrito · $${this.formatPrice(total)}`
+    this.addButtonLabelTarget.textContent = (stock != null && stock <= 0)
+      ? "Sin stock"
+      : `Agregar al carrito · $${this.formatPrice(total)}`
   }
 
   addToCart() {
+    const stock = this.stockFor(this.size, this.color)
     const cart = readCart()
     const existing = findCartItem(cart, this.product.id, this.size, this.color)
 
     if (existing) {
       existing.qty += this.qty
+      if (stock != null) existing.qty = Math.min(existing.qty, stock)
+      existing.stock = stock
     } else {
       cart.push({
         id: this.product.id,
@@ -216,6 +250,7 @@ export default class extends Controller {
         qty: this.qty,
         price: this.product.price,
         image: this.slides[0] || this.product.image,
+        stock: stock,
       })
     }
 

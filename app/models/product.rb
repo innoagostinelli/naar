@@ -34,6 +34,10 @@ class Product < ApplicationRecord
     variants.map(&:size).compact.uniq.sort_by { |s| SIZE_ORDER.index(s) || 99 }
   end
 
+  def out_of_stock?
+    variants.any? && variants.all? { |v| v.stock.present? && v.stock <= 0 }
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     %w[name category_id flag status]
   end

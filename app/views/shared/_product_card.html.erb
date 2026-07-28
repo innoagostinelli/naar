@@ -9,7 +9,9 @@
       <%= image_tag img.image.variant(resize_to_fill: [ 600, 800 ]), alt: img.alt.presence || product.name,
             class: "media-carousel-slide #{'is-active' if i.zero?}", data: { card_carousel_target: "slide" } %>
     <% end %>
-    <% if product.flag.present? && !product.sin_flag? %>
+    <% if product.out_of_stock? %>
+      <span class="product-flag flag-agotado">Agotado</span>
+    <% elsif product.flag.present? && !product.sin_flag? %>
       <span class="product-flag <%= 'flag-oferta' if product.oferta? %><%= ' flag-bestseller' if product.bestseller? %>">
         <%= product.flag_label %>
       </span>

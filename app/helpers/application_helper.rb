@@ -22,6 +22,7 @@ module ApplicationHelper
       description: product.description.presence,
       sizes: product.sizes,
       swatches: swatches,
+      variants: product.variants.map { |v| { size: v.size, color: v.color_name, stock: v.stock } },
       image: (url_for(image.image.variant(resize_to_limit: [ 1000, 1300 ])) if image&.image&.attached?),
       images: generic_images,
       imagesByColor: images_by_color

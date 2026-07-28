@@ -1,5 +1,11 @@
 <% content_for :page_title, "Pedidos" %>
 
+<% if @orders_with_stock_conflict.positive? %>
+  <div class="alert alert-warning mb-3" role="alert">
+    Tienes <%= @orders_with_stock_conflict %> <%= @orders_with_stock_conflict == 1 ? "pedido" : "pedidos" %> con falta de stock en alguna prenda — revísalos antes de confirmarlos (marcados con ⚠️ en la lista).
+  </div>
+<% end %>
+
 <div class="row g-3 mb-4">
   <div class="col-6 col-lg-3">
     <div class="card stat-card text-center py-3">
@@ -84,7 +90,14 @@
       <tbody>
         <% @orders.each do |order| %>
           <tr>
-            <td class="fw-semibold">#<%= order.id %></td>
+            <td class="fw-semibold">
+              #<%= order.id %>
+              <% if order.stock_conflict? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59f00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" title="Ya no hay stock suficiente para completar este pedido — revisar antes de confirmarlo">
+                  <path d="M12 9v4"/><path d="M10.363 3.591 2.257 17.494a1.914 1.914 0 0 0 1.636 2.906h16.214a1.914 1.914 0 0 0 1.636-2.906L13.637 3.59a1.914 1.914 0 0 0-3.274 0z"/><path d="M12 16h.01"/>
+                </svg>
+              <% end %>
+            </td>
             <td class="text-muted"><%= order.created_at.strftime("%d/%m/%Y %H:%M") %></td>
             <td class="text-muted"><%= order.customer_name %></td>
             <td class="text-muted"><%= order.delivery? ? "Delivery" : "Retiro" %></td>

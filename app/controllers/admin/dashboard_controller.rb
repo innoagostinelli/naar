@@ -8,5 +8,7 @@ class Admin::DashboardController < Admin::BaseController
     @total_reels         = Reel.count
     @storage_usage       = StorageUsageService.call
     @pendientes_contacto = Order.pendiente_contacto.count
+    @espera_pago         = Order.espera_pago.count
+    @email_quota         = EmailQuotaService.call
   end
 end

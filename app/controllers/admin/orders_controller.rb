@@ -2,7 +2,7 @@ class Admin::OrdersController < Admin::BaseController
   before_action :set_order, only: [ :show, :update ]
 
   def index
-    @orders = Order.order(created_at: :desc)
+    @orders = Order.order(created_at: :desc).includes(:order_items)
     @orders = @orders.where(status: params[:status]) if params[:status].present?
     @orders = @orders.where(fulfillment_method: params[:fulfillment_method]) if params[:fulfillment_method].present?
     @orders = @orders.where(created_at: date_range) if date_range
@@ -13,6 +13,7 @@ class Admin::OrdersController < Admin::BaseController
       pendiente_contacto: @orders.pendiente_contacto.count,
       espera_pago:        @orders.espera_pago.count,
     }
+    @orders_with_stock_conflict = @orders.select(&:stock_conflict?).size
   end
 
   def show

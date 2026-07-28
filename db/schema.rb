@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_13_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_27_155152) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -55,6 +55,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_13_100000) do
     t.datetime "updated_at", null: false
     t.index ["state_id", "name"], name: "index_cities_on_state_id_and_name", unique: true
     t.index ["state_id"], name: "index_cities_on_state_id"
+  end
+
+  create_table "email_send_logs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "mailer_name"
+    t.string "subject"
+    t.string "to_address"
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_email_send_logs_on_created_at"
   end
 
   create_table "faqs", force: :cascade do |t|

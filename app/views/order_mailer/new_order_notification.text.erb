@@ -1,0 +1,18 @@
+Nueva orden en naar
+Generada el <%= @order.created_at.strftime("%d/%m/%Y a las %H:%M") %>
+
+Cliente: <%= @order.customer_name %>
+Teléfono: <%= @order.customer_phone %>
+Entrega: <%= @order.delivery? ? "Delivery" : "Retiro en tienda" %>
+<% if @order.delivery? -%>
+Dirección: <%= [ @order.address, @order.city&.name, @order.state&.name ].compact_blank.join(", ") %>
+<% end -%>
+
+Productos:
+<% @order.order_items.each do |item| -%>
+- <%= item.name %> (<%= [ item.size, item.color ].compact_blank.join(" / ").presence || "—" %>) x<%= item.qty %> — $<%= number_with_delimiter(item.subtotal.to_i) %>
+<% end -%>
+
+Total: $<%= number_with_delimiter(@order.total.to_i) %>
+
+Ver la orden: <%= admin_order_url(@order) %>

@@ -29,6 +29,7 @@ class Order < ApplicationRecord
   validate :city_belongs_to_state, if: :delivery?
 
   after_update :adjust_stock_for_status_change, if: :saved_change_to_status?
+  after_create :send_new_order_notification
 
   def to_param
     token
@@ -38,7 +39,19 @@ class Order < ApplicationRecord
     STATUS_LABELS[status]
   end
 
+  # true si la orden todavía no se pagó (el stock no se reservó) y alguno de
+  # sus items ya no tiene suficiente stock disponible en este momento.
+  def stock_conflict?
+    return false unless pendiente_contacto? || espera_pago?
+
+    order_items.any?(&:insufficient_stock?)
+  end
+
   private
+
+  def send_new_order_notification
+    OrderMailer.new_order_notification(self).deliver_later
+  end
 
   def city_belongs_to_state
     errors.add(:city, "no pertenece al estado seleccionado") if city && state && city.state_id != state.id
