@@ -10,7 +10,7 @@
 
 <%= render "admin/shared/filter_bar", q: @q, url: admin_reels_path, fields: [
   { attr: :tag_eq, type: :select, label: "Tag", col: 3,
-    options: Reel.distinct.order(:tag).pluck(:tag).compact },
+    options: Reel.reorder(:tag).distinct.pluck(:tag).compact },
   { attr: "has_video", type: :select, label: "Video", col: 3, plain: true,
     options: [ [ "Con video", "yes" ], [ "Sin video", "no" ] ] },
 ] %>
