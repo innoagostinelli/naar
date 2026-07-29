@@ -9,5 +9,6 @@ class HomeController < ApplicationController
     @reels      = Reel.all
     @faqs       = Faq.all
     @homepage_setting = HomepageSetting.instance
+    @banner_setting   = BannerSetting.instance
   end
 end

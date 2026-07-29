@@ -172,3 +172,7 @@
     <% end %>
   </div>
 </section>
+
+<% if @banner_setting.active? && @banner_setting.media? %>
+  <%= render "shared/banner_popup", banner_setting: @banner_setting %>
+<% end %>

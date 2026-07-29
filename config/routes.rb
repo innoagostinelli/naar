@@ -18,5 +18,6 @@ Rails.application.routes.draw do
     resources :reels
     resources :orders, only: [ :index, :show, :update ]
     resource :homepage_setting, only: [ :edit, :update ]
+    resource :banner_setting, only: [ :edit, :update ]
   end
 end
