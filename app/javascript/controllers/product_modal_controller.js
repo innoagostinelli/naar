@@ -216,7 +216,7 @@ export default class extends Controller {
     const outOfStock = stock != null && stock <= 0
 
     if (this.hasStockHintTarget) {
-      this.stockHintTarget.textContent = outOfStock ? "Sin stock" : (stock != null && stock <= 5 ? `Quedan ${stock}` : "")
+      this.stockHintTarget.textContent = outOfStock ? "Sin stock" : ""
     }
     if (this.hasAddButtonTarget) this.addButtonTarget.disabled = outOfStock
     if (this.hasIncrementBtnTarget) this.incrementBtnTarget.disabled = stock != null && this.qty >= stock

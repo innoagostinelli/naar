@@ -116,13 +116,6 @@ export default class extends Controller {
     qtyRow.append(minusBtn, qtySpan, plusBtn, removeBtn)
     info.appendChild(qtyRow)
 
-    if (item.stock != null && item.stock <= 5) {
-      const hint = document.createElement("p")
-      hint.className = "cart-stock-hint"
-      hint.textContent = `Quedan ${item.stock}`
-      info.appendChild(hint)
-    }
-
     const price = document.createElement("div")
     price.className = "cart-price"
     price.textContent = `$${formatPrice(item.price * item.qty)}`
