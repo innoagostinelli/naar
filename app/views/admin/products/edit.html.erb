@@ -7,7 +7,7 @@
 
 <%= render "form", product: @product %>
 
-<div class="card mt-2" data-controller="variant-rows">
+<div class="card mt-2" id="variantes" data-controller="variant-rows">
   <div class="card-header d-flex align-items-center justify-content-between">
     <h3 class="card-title">Variantes <span class="text-muted fw-normal fs-6">(<%= @product.variants.count %>)</span></h3>
     <button type="button" class="btn btn-sm btn-naar" data-variant-rows-target="addButton" data-action="variant-rows#showNew">
@@ -15,6 +15,14 @@
       Agregar variante
     </button>
   </div>
+
+  <%
+    variants = @product.variants.order(:color_name, :size).to_a
+    new_variant = ProductVariant.new
+  %>
+  <% (variants + [ new_variant ]).each do |v| %>
+    <%= render "admin/product_variants/row_form_tag", product: @product, variant: v %>
+  <% end %>
 
   <div class="table-responsive">
     <table class="table table-vcenter table-hover card-table">
@@ -28,11 +36,11 @@
         </tr>
       </thead>
       <tbody>
-        <% @product.variants.order(:color_name, :size).each do |v| %>
+        <% variants.each do |v| %>
           <%= render "admin/product_variants/row", product: @product, variant: v %>
           <%= render "admin/product_variants/row_form", product: @product, variant: v %>
         <% end %>
-        <%= render "admin/product_variants/row_form", product: @product, variant: ProductVariant.new %>
+        <%= render "admin/product_variants/row_form", product: @product, variant: new_variant %>
       </tbody>
     </table>
   </div>

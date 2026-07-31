@@ -1,0 +1,6 @@
+<% field_suffix = variant.persisted? ? variant.id : "new" %>
+<%= form_with model: variant,
+      url: (variant.persisted? ? admin_product_variant_path(product, variant) : admin_product_variants_path(product)),
+      id: "variant_form_#{field_suffix}",
+      html: { style: "display:none" } %>
+</form>

@@ -22,6 +22,13 @@
   <td>
     <div class="admin-actions justify-content-end">
       <button type="button" class="btn btn-sm btn-ghost" data-action="variant-rows#edit" data-variant-id="<%= variant.id %>">Editar</button>
+      <button type="button" class="btn btn-sm btn-ghost" data-action="variant-rows#duplicate"
+            data-variant-id="<%= variant.id %>"
+            data-color-name="<%= variant.color_name %>"
+            data-color-hex="<%= variant.color_hex %>"
+            data-size="<%= variant.size %>"
+            data-sku="<%= variant.sku %>"
+            data-stock="<%= variant.stock %>">Duplicar</button>
       <%= button_to "Eliminar", admin_product_variant_path(product, variant),
             method: :delete,
             form: { data: { turbo_confirm: "¿Eliminar variante #{variant.display_name}?" } },
