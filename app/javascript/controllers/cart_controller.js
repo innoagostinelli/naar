@@ -8,7 +8,7 @@ export default class extends Controller {
   static targets = [
     "scrim", "drawer", "items", "empty", "foot", "count", "subtotal", "total", "badge", "checkoutLabel",
     "form", "customerName", "customerPhone", "addressSection", "deliveryNote", "address", "country", "state", "city", "locationsData",
-    "itemsSummary", "customerSummary", "addressSummary",
+    "itemsSummary", "customerSummary", "addressSummary", "honeypot",
   ]
 
   connect() {
@@ -305,6 +305,15 @@ export default class extends Controller {
   async checkout(event) {
     const cart = readCart()
     if (!cart.length) return
+
+    // Honeypot: campo oculto para humanos, un bot que autocompleta todo lo
+    // llena. Si viene con valor, fingimos éxito sin pegarle al backend.
+    if (this.honeypotTarget.value) {
+      writeCart([])
+      this.close()
+      showToast("¡Pedido enviado! Coordinamos por WhatsApp.")
+      return
+    }
 
     if (!this.formTarget.checkValidity()) {
       const invalid = this.formTarget.querySelector(":invalid")

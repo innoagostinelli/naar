@@ -15,6 +15,7 @@ gem "pagy", "~> 9.4"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootstrap", "~> 5.3"
 gem "sassc-rails", "~> 2.1"
+gem "rack-attack"
 gem "bcrypt", "~> 3.1.7"
 
 group :development, :test do

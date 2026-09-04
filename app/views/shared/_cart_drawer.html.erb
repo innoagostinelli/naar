@@ -31,6 +31,11 @@
     </div>
 
     <form data-cart-target="form">
+      <label class="hp-field" aria-hidden="true">
+        Dejar en blanco
+        <input type="text" name="website" tabindex="-1" autocomplete="off" data-cart-target="honeypot">
+      </label>
+
       <div class="checkout-section" data-section="customer">
         <button type="button" class="checkout-section-head" data-action="click->cart#toggleSection">
           <span>Tus datos <span data-cart-target="customerSummary" class="checkout-section-summary"></span></span>
