@@ -6,6 +6,12 @@ Rails.application.routes.draw do
   get "buscar", to: "search#index", as: :search
 
   namespace :admin do
+    get  "login",  to: "sessions#new",     as: :login
+    post "login",  to: "sessions#create"
+    delete "logout", to: "sessions#destroy", as: :logout
+
+    resource :password, only: [ :edit, :update ], controller: "passwords"
+
     root "dashboard#index"
     resources :products do
       resources :variants, only: [ :create, :update, :destroy ],

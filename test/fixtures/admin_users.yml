@@ -1,0 +1,5 @@
+# Contraseña en texto plano: "clave-de-test-123" (solo se guarda el digest acá,
+# hay que mantenerla igual en los tests que hacen login contra este fixture).
+naar_admin:
+  username: naar_admin
+  password_digest: <%= BCrypt::Password.create("clave-de-test-123") %>

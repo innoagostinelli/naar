@@ -1,0 +1,32 @@
+<div class="admin-login-card">
+  <div class="text-center mb-4">
+    <span class="admin-login-wordmark">naar</span>
+    <p class="admin-login-tag">panel de gestión</p>
+  </div>
+
+  <div class="card card-md admin-login-panel">
+    <div class="card-body">
+      <h2 class="h3 text-center mb-4">Iniciar sesión</h2>
+
+      <% flash.each do |type, msg| %>
+        <div class="alert alert-<%= type == 'notice' ? 'success' : 'danger' %> mb-3" role="alert">
+          <%= msg %>
+        </div>
+      <% end %>
+
+      <%= form_with url: admin_login_path, method: :post, local: true do %>
+        <div class="mb-3">
+          <label class="form-label">Usuario</label>
+          <input type="text" name="username" class="form-control" autocomplete="username" autofocus required>
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Contraseña</label>
+          <input type="password" name="password" class="form-control" autocomplete="current-password" required>
+        </div>
+        <div class="form-footer">
+          <button type="submit" class="btn admin-login-btn w-100">Entrar</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

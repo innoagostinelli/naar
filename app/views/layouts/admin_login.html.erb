@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Iniciar sesión · Admin naar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
+  <%= stylesheet_link_tag "admin", media: "all" %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="antialiased d-flex flex-column">
+  <div class="page page-center">
+    <div class="container container-tight py-4">
+      <%= yield %>
+    </div>
+  </div>
+</body>
+</html>

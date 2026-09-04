@@ -317,6 +317,39 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   }
 }
 
+// ── Login ────────────────────────────────────────────────────────
+.page.page-center { background: $burgundy; }
+
+.admin-login-card { width: 100%; max-width: 380px; margin: 0 auto; }
+
+.admin-login-wordmark {
+  font-size: 2rem;
+  font-weight: 700;
+  color: $lemon;
+  letter-spacing: .04em;
+}
+.admin-login-tag {
+  font-size: .7rem;
+  color: rgba(#fff, .55);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin: 2px 0 0;
+}
+
+.admin-login-panel {
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(#000, .18);
+}
+
+.admin-login-btn {
+  background: $burgundy;
+  border-color: $burgundy;
+  color: #fff;
+  font-weight: 600;
+  &:hover, &:focus { background: darken($burgundy, 6%); border-color: darken($burgundy, 6%); color: #fff; }
+}
+
 // ── Section divider inside card ───────────────────────────────────
 .form-section {
   padding-top: 20px;

@@ -2,9 +2,10 @@ require "test_helper"
 
 class Admin::OrdersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @credentials = ActionController::HttpAuthentication::Basic.encode_credentials(
-      Admin::BaseController::ADMIN_USER, Admin::BaseController::ADMIN_PASS
-    )
+    post admin_login_path, params: {
+      username: admin_users(:naar_admin).username,
+      password: "clave-de-test-123"
+    }
   end
 
   test "marcar como pagada descuenta el stock en base de datos" do
@@ -12,8 +13,7 @@ class Admin::OrdersControllerTest < ActionDispatch::IntegrationTest
     variant = product_variants(:remera_m_negro)
     assert_equal 10, variant.stock
 
-    patch admin_order_path(order), params: { order: { status: "pagada" } },
-      headers: { "HTTP_AUTHORIZATION" => @credentials }
+    patch admin_order_path(order), params: { order: { status: "pagada" } }
 
     assert_redirected_to admin_orders_path
     assert_equal "pagada", order.reload.status
@@ -23,8 +23,7 @@ class Admin::OrdersControllerTest < ActionDispatch::IntegrationTest
   test "items sin match agregan aviso al mensaje de notificacion" do
     order = orders(:espera_pago_order)
 
-    patch admin_order_path(order), params: { order: { status: "pagada" } },
-      headers: { "HTTP_AUTHORIZATION" => @credentials }
+    patch admin_order_path(order), params: { order: { status: "pagada" } }
 
     assert_match "Atención: no se pudo ajustar el stock", flash[:notice]
     assert_match "Producto Borrado", flash[:notice]
