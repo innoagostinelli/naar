@@ -94,6 +94,13 @@ body { font-family: 'Poppins', sans-serif !important; }
   &:hover, &:focus { opacity: .88; background: $burgundy !important; color: #fff !important; }
 }
 
+// Switch "Letras"/"Números" de talla (ver size_type_controller.js)
+.btn-outline-secondary.active {
+  background: $burgundy !important;
+  border-color: $burgundy !important;
+  color: #fff !important;
+}
+
 // ── Cards ─────────────────────────────────────────────────────────
 .card {
   border-radius: 12px !important;

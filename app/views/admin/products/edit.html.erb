@@ -9,7 +9,7 @@
 
 <div class="card mt-2" id="variantes" data-controller="variant-rows">
   <div class="card-header d-flex align-items-center justify-content-between">
-    <h3 class="card-title">Variantes <span class="text-muted fw-normal fs-6">(<%= @product.variants.count %>)</span></h3>
+    <h3 class="card-title">Variantes <%= render "admin/product_variants/count", product: @product %></h3>
     <button type="button" class="btn btn-sm btn-naar" data-variant-rows-target="addButton" data-action="variant-rows#showNew">
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Agregar variante
@@ -19,10 +19,16 @@
   <%
     variants = @product.variants.order(:color_name, :size).to_a
     new_variant = ProductVariant.new
+    # La fila "nueva variante" arranca el switch letras/números en el mismo
+    # modo que la última variante cargada, para no tener que tocarlo de nuevo
+    # al agregar varias tallas numéricas (o de letra) seguidas.
+    last_size_mode = Product::NUMERIC_SIZES.include?(variants.last&.size) ? "numeric" : "alpha"
   %>
-  <% (variants + [ new_variant ]).each do |v| %>
-    <%= render "admin/product_variants/row_form_tag", product: @product, variant: v %>
-  <% end %>
+  <div id="variant_hidden_forms">
+    <% (variants + [ new_variant ]).each do |v| %>
+      <%= render "admin/product_variants/row_form_tag", product: @product, variant: v %>
+    <% end %>
+  </div>
 
   <div class="table-responsive">
     <table class="table table-vcenter table-hover card-table">
@@ -40,7 +46,7 @@
           <%= render "admin/product_variants/row", product: @product, variant: v %>
           <%= render "admin/product_variants/row_form", product: @product, variant: v %>
         <% end %>
-        <%= render "admin/product_variants/row_form", product: @product, variant: new_variant %>
+        <%= render "admin/product_variants/row_form", product: @product, variant: new_variant, default_size_mode: last_size_mode %>
       </tbody>
     </table>
   </div>

@@ -3,6 +3,9 @@ class ProductVariant < ApplicationRecord
 
   validates :product, presence: true
   validates :stock,   numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :size,    uniqueness: { scope: [ :product_id, :color_name ],
+                                     message: "ya existe una variante con esta talla y color para este producto" },
+                       allow_blank: true
 
   def in_stock?
     stock.nil? || stock > 0

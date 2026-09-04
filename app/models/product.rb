@@ -3,7 +3,12 @@ class Product < ApplicationRecord
   has_many :variants, class_name: "ProductVariant", dependent: :destroy
   has_many :images,   class_name: "ProductImage",   dependent: :destroy
 
-  SIZE_ORDER = %w[XS S M L XL XXL].freeze
+  # "Tipo de talla": letras (prendas normales) o números (jeans/pantalones,
+  # ver el switch en el form de variantes). Mantener sincronizado con las
+  # listas ALPHA/NUMERIC de app/javascript/controllers/size_type_controller.js.
+  ALPHA_SIZES   = %w[XS S M L XL XXL Único].freeze
+  NUMERIC_SIZES = (24..31).map(&:to_s).freeze
+  SIZE_ORDER    = (ALPHA_SIZES + NUMERIC_SIZES).freeze
 
   enum :flag,   { sin_flag: 0, nuevo: 1, oferta: 2, bestseller: 3 }
   enum :status, { draft: 0, active: 1, archived: 2 }
