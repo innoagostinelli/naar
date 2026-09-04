@@ -244,6 +244,41 @@ export default class extends Controller {
     })
   }
 
+  // El campo de teléfono solo pide el número local: el +58 es un prefijo fijo
+  // en el markup (ver _cart_drawer). Sacamos los dígitos, tirando un 0 inicial
+  // si lo escribieron (costumbre de marcar "0414-1234567"), y esperamos los
+  // 10 dígitos de un número venezolano (código de área/operadora + número).
+  phoneDigits() {
+    let digits = this.customerPhoneTarget.value.replace(/\D/g, "")
+    if (digits.length === 11 && digits.startsWith("0")) digits = digits.slice(1)
+    return digits
+  }
+
+  // Número completo en formato internacional (E.164) para mandar al backend.
+  fullPhone() {
+    const digits = this.phoneDigits()
+    return digits ? `+58${digits}` : ""
+  }
+
+  // `type="tel"` no valida formato — sin esto el checkout aceptaba "asdasd".
+  // Marcamos el campo como inválido (setCustomValidity) para que checkValidity()
+  // y reportValidity() lo detecten junto al resto del form.
+  validatePhone() {
+    const field = this.customerPhoneTarget
+    const raw = field.value.trim()
+    const validChars = /^[\d\s().-]*$/.test(raw)
+
+    let message = ""
+    if (raw !== "") {
+      if (!validChars) {
+        message = "El teléfono solo puede tener números y los signos - ( )"
+      } else if (this.phoneDigits().length !== 10) {
+        message = "Ingresa un número válido (10 dígitos, ej: 414 1234567)"
+      }
+    }
+    field.setCustomValidity(message)
+  }
+
   persistCheckoutInfo() {
     const selected = this.formTarget.querySelector('input[name="fulfillment"]:checked')
     localStorage.setItem(CHECKOUT_INFO_KEY, JSON.stringify({
@@ -315,6 +350,8 @@ export default class extends Controller {
       return
     }
 
+    this.validatePhone()
+
     if (!this.formTarget.checkValidity()) {
       const invalid = this.formTarget.querySelector(":invalid")
       const section = invalid?.closest(".checkout-section")
@@ -325,7 +362,7 @@ export default class extends Controller {
 
     const customer = {
       customerName: this.customerNameTarget.value,
-      customerPhone: this.customerPhoneTarget.value,
+      customerPhone: this.fullPhone(),
       fulfillmentMethod: this.formTarget.querySelector('input[name="fulfillment"]:checked').value,
       country: this.countryTarget.value,
       stateId: this.stateTarget.value || null,

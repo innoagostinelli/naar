@@ -1,6 +1,14 @@
 require "test_helper"
 
 class OrderTest < ActiveSupport::TestCase
+  def build_order(**attrs)
+    Order.new({
+      customer_name: "Cliente Test",
+      customer_phone: "0414-1234567",
+      fulfillment_method: :pickup,
+      total: 0,
+    }.merge(attrs))
+  end
   test "pasar a pagada descuenta el stock de las variantes con match" do
     order = orders(:espera_pago_order)
     variant = product_variants(:remera_m_negro)
@@ -81,6 +89,26 @@ class OrderTest < ActiveSupport::TestCase
 
     assert_nil variant.reload.stock
     refute_includes order.stock_adjustment_warnings, order_items(:item_unlimited)
+  end
+
+  test "rechaza un telefono con letras" do
+    order = build_order(customer_phone: "assdasdsad")
+    refute order.valid?
+    assert_includes order.errors[:customer_phone], "solo puede contener números y los signos + - ( )"
+  end
+
+  test "rechaza un telefono con muy pocos digitos" do
+    order = build_order(customer_phone: "0412-123")
+    refute order.valid?
+    assert_includes order.errors[:customer_phone], "debe tener entre 10 y 15 dígitos"
+  end
+
+  test "acepta un telefono venezolano local" do
+    assert build_order(customer_phone: "0414-1234567").valid?
+  end
+
+  test "acepta un telefono con codigo de pais y separadores" do
+    assert build_order(customer_phone: "+58 (414) 123 45 67").valid?
   end
 
   test "transicion que no involucra pagada no ajusta stock" do

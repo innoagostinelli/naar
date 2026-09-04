@@ -22,6 +22,7 @@ class Order < ApplicationRecord
   validates :total, numericality: { greater_than_or_equal_to: 0 }
   validates :customer_name, presence: true
   validates :customer_phone, presence: true
+  validate :customer_phone_looks_like_a_number
   validates :fulfillment_method, presence: true
   validates :address, presence: true, if: :delivery?
   validates :state, presence: true, if: :delivery?
@@ -55,6 +56,24 @@ class Order < ApplicationRecord
 
   def send_new_order_notification
     OrderMailer.new_order_notification(self).deliver_later
+  end
+
+  # El input es `type="tel"`, que no valida formato: dejaba pasar "asdasd".
+  # Aceptamos dígitos y los separadores usuales (+ - ( ) . y espacios) y
+  # exigimos entre 10 y 15 dígitos reales (móvil local venezolano = 11,
+  # con código de país hasta ~13).
+  def customer_phone_looks_like_a_number
+    return if customer_phone.blank?
+
+    unless customer_phone.match?(/\A[\d\s+().\-]+\z/)
+      errors.add(:customer_phone, "solo puede contener números y los signos + - ( )")
+      return
+    end
+
+    digits = customer_phone.gsub(/\D/, "")
+    unless digits.length.between?(10, 15)
+      errors.add(:customer_phone, "debe tener entre 10 y 15 dígitos")
+    end
   end
 
   def city_belongs_to_state

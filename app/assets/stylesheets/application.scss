@@ -1201,6 +1201,40 @@ a { color: inherit; text-decoration: none; }
   &:focus { outline: none; border-color: var(--burgundy); }
   &:disabled { opacity: .5; cursor: not-allowed; }
 }
+
+// Teléfono con prefijo fijo +58 (Venezuela): el input de arriba pierde su
+// propio borde/fondo y los toma el wrapper, para que la banderita y el
+// código queden pegados dentro del mismo campo.
+.tel-fixed {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--r-lg, 12px);
+  background: var(--offwhite);
+  overflow: hidden;
+  &:focus-within { border-color: var(--burgundy); }
+}
+.tel-fixed .tel-prefix {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 12px;
+  background: var(--cream);
+  border-right: 1.5px solid var(--line-strong);
+  font-size: 15px;
+  color: var(--ink);
+  white-space: nowrap;
+  user-select: none;
+}
+.tel-fixed .tel-code { font-weight: 500; }
+.checkout-field .tel-fixed input[type="tel"] {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  &:focus { border-color: transparent; }
+}
 .fulfillment-row { display: flex; gap: 8px; }
 .fulfillment-pill { position: relative; cursor: pointer; flex: 1; }
 .fulfillment-pill input[type="radio"] { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }

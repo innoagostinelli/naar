@@ -51,7 +51,10 @@
 
           <label class="checkout-field">
             <span>Teléfono</span>
-            <input type="tel" data-cart-target="customerPhone" data-action="input->cart#persistCheckoutInfo" required autocomplete="tel" placeholder="0412-1234567">
+            <div class="tel-fixed">
+              <span class="tel-prefix" aria-hidden="true">🇻🇪 <span class="tel-code">+58</span></span>
+              <input type="tel" data-cart-target="customerPhone" data-action="input->cart#persistCheckoutInfo input->cart#validatePhone" required autocomplete="tel-national" inputmode="tel" placeholder="414 1234567">
+            </div>
           </label>
 
           <div class="checkout-field">
