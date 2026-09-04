@@ -8,7 +8,7 @@ gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "bootsnap", require: false
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 2.0"
 gem "aws-sdk-s3", require: false
 gem "ransack"
 gem "pagy", "~> 9.4"
