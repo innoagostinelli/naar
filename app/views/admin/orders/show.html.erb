@@ -49,6 +49,7 @@
           <th></th>
           <th>Producto</th>
           <th>Talla / Color</th>
+          <th>SKU</th>
           <th class="text-center">Cant.</th>
           <th class="text-end">Precio</th>
           <th class="text-end">Subtotal</th>
@@ -64,6 +65,7 @@
             </td>
             <td class="fw-semibold"><%= item.name %></td>
             <td class="text-muted"><%= [ item.size, item.color ].compact_blank.join(" / ").presence || "—" %></td>
+            <td class="text-muted"><%= item.matching_variant&.sku.presence || "—" %></td>
             <td class="text-center"><%= item.qty %></td>
             <td class="text-end">$<%= number_with_delimiter(item.price.to_i) %></td>
             <td class="text-end fw-semibold">$<%= number_with_delimiter(item.subtotal.to_i) %></td>
@@ -72,7 +74,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="5" class="text-end fw-semibold">Total</td>
+          <td colspan="6" class="text-end fw-semibold">Total</td>
           <td class="text-end fw-bold">$<%= number_with_delimiter(@order.total.to_i) %></td>
         </tr>
       </tfoot>
