@@ -35,7 +35,21 @@ Rails.application.configure do
 
   # Log to STDOUT with the current request id as a default log tag.
   config.log_tags = [ :request_id ]
-  config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
+
+  # Además de STDOUT (que journalctl ya captura vía el servicio systemd de
+  # Puma), duplicamos el mismo stream a shared/log/production.log (linked_dir
+  # de Capistrano, persiste entre deploys) para poder revisar logs con
+  # tail/grep sin SSH + journalctl. Un solo TaggedLogging envolviendo el
+  # BroadcastLogger (no uno por logger) — así el tag del request se aplica
+  # una sola vez a ambos destinos en vez de duplicar cada línea.
+  # Rotación con el mecanismo built-in de Logger (sin logrotate ni gemas
+  # nuevas): conserva 5 archivos viejos, rota cada 10MB.
+  config.logger = ActiveSupport::TaggedLogging.new(
+    ActiveSupport::BroadcastLogger.new(
+      ActiveSupport::Logger.new(STDOUT),
+      ActiveSupport::Logger.new(Rails.root.join("log", "production.log"), 5, 10.megabytes)
+    )
+  )
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!).
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")

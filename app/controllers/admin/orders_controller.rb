@@ -23,7 +23,8 @@ class Admin::OrdersController < Admin::BaseController
     if @order.update(status_params)
       redirect_back fallback_location: admin_orders_path, notice: update_notice
     else
-      redirect_back fallback_location: admin_orders_path, alert: "No se pudo actualizar el estado."
+      redirect_back fallback_location: admin_orders_path,
+        alert: "No se pudo actualizar el estado: #{@order.errors.full_messages.to_sentence}."
     end
   end
 

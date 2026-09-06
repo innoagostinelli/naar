@@ -19,15 +19,19 @@ class Order < ApplicationRecord
     "anulada"            => "Anulada",
   }.freeze
 
-  validates :total, numericality: { greater_than_or_equal_to: 0 }
-  validates :customer_name, presence: true
-  validates :customer_phone, presence: true
-  validate :customer_phone_looks_like_a_number
-  validates :fulfillment_method, presence: true
-  validates :address, presence: true, if: :delivery?
-  validates :state, presence: true, if: :delivery?
-  validates :city, presence: true, if: :delivery?
-  validate :city_belongs_to_state, if: :delivery?
+  # Estas validaciones son de datos del checkout público: solo tienen sentido
+  # al crear la orden. El admin, después, solo edita :status — no debe
+  # bloquearse por datos legacy de otros campos que nunca toca (ej. órdenes
+  # de antes de que existiera alguna de estas validaciones).
+  validates :total, numericality: { greater_than_or_equal_to: 0 }, on: :create
+  validates :customer_name, presence: true, on: :create
+  validates :customer_phone, presence: true, on: :create
+  validate :customer_phone_looks_like_a_number, on: :create
+  validates :fulfillment_method, presence: true, on: :create
+  validates :address, presence: true, if: :delivery?, on: :create
+  validates :state, presence: true, if: :delivery?, on: :create
+  validates :city, presence: true, if: :delivery?, on: :create
+  validate :city_belongs_to_state, if: :delivery?, on: :create
 
   after_update :adjust_stock_for_status_change, if: :saved_change_to_status?
   # _commit (no after_create): el job de email corre en otro hilo (Async

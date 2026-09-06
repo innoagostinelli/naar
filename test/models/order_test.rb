@@ -95,6 +95,18 @@ class OrderTest < ActiveSupport::TestCase
     order = build_order(customer_phone: "assdasdsad")
     refute order.valid?
     assert_includes order.errors[:customer_phone], "solo puede contener números y los signos + - ( )"
+    # on: :create no desactivó la validación, solo la acotó a la creación.
+    refute order.save
+  end
+
+  test "orden vieja con datos legacy invalidos igual se puede actualizar de status" do
+    # Simula una orden creada antes de que existiera la validación de
+    # teléfono (on: :create la deja fuera de las actualizaciones post-venta).
+    order = orders(:espera_pago_order)
+    order.update_column(:customer_phone, "mi telefono")
+
+    assert order.update(status: :pagada)
+    assert order.reload.pagada?
   end
 
   test "rechaza un telefono con muy pocos digitos" do
