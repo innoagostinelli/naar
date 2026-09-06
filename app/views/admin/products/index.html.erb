@@ -9,7 +9,7 @@
 <%= render "admin/shared/stat_cards", cards: @stats %>
 
 <%= render "admin/shared/filter_bar", q: @q, url: admin_products_path, fields: [
-  { attr: :name_cont, type: :search, label: "Buscar", col: 3 },
+  { attr: :name_unaccent_cont, type: :search, label: "Buscar", col: 3 },
   { attr: :category_id_eq, type: :select, label: "Categoría", col: 3,
     options: Category.order(:position).pluck(:name, :id) },
   { attr: :flag_eq, type: :select, label: "Flag", col: 2,

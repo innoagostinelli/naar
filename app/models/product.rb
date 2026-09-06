@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  include AccentInsensitiveSearch
+
   belongs_to :category
   has_many :variants, class_name: "ProductVariant", dependent: :destroy
   has_many :images,   class_name: "ProductImage",   dependent: :destroy
@@ -23,6 +25,8 @@ class Product < ApplicationRecord
   scope :nuevos,    -> { active.where(flag: :nuevo) }
   scope :en_oferta, -> { active.where(flag: :oferta) }
 
+  accent_insensitive_ransacker :name
+
   def on_sale?
     compare_at_price.present? && compare_at_price > price
   end
@@ -44,7 +48,7 @@ class Product < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[name category_id flag status]
+    %w[name name_unaccent category_id flag status]
   end
 
   def self.ransackable_associations(auth_object = nil)

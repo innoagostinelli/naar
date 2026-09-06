@@ -9,7 +9,7 @@
 <%= render "admin/shared/stat_cards", cards: @stats %>
 
 <%= render "admin/shared/filter_bar", q: @q, url: admin_categories_path, fields: [
-  { attr: :name_cont, type: :search, label: "Buscar", col: 4 },
+  { attr: :name_unaccent_cont, type: :search, label: "Buscar", col: 4 },
   { attr: "has_products", type: :select, label: "Productos", col: 3, plain: true,
     options: [ [ "Con productos", "yes" ], [ "Sin productos", "no" ] ] },
 ] %>

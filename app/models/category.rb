@@ -1,5 +1,6 @@
 class Category < ApplicationRecord
   include AttachmentValidatable
+  include AccentInsensitiveSearch
 
   has_many :products, -> { order(:position) }, dependent: :destroy
   has_one_attached :image
@@ -14,8 +15,10 @@ class Category < ApplicationRecord
 
   default_scope { order(:position) }
 
+  accent_insensitive_ransacker :name
+
   def self.ransackable_attributes(auth_object = nil)
-    %w[name]
+    %w[name name_unaccent]
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -25,10 +28,7 @@ class Category < ApplicationRecord
   private
 
   def generate_slug
-    self.slug = name.downcase.strip
-                    .gsub(/[áàäâ]/, "a").gsub(/[éèëê]/, "e")
-                    .gsub(/[íìïî]/, "i").gsub(/[óòöô]/, "o")
-                    .gsub(/[úùüû]/, "u").gsub("ñ", "n")
+    self.slug = self.class.strip_accents(name).strip
                     .gsub(/[^a-z0-9\s-]/, "").gsub(/\s+/, "-")
   end
 end

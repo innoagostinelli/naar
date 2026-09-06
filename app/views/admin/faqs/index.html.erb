@@ -7,7 +7,7 @@
 <% end %>
 
 <%= render "admin/shared/filter_bar", q: @q, url: admin_faqs_path, fields: [
-  { attr: :question_or_answer_cont, type: :search, label: "Buscar en pregunta o respuesta", col: 6 },
+  { attr: :question_unaccent_or_answer_unaccent_cont, type: :search, label: "Buscar en pregunta o respuesta", col: 6 },
 ] %>
 
 <div class="card">
