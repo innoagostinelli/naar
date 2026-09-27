@@ -26,6 +26,9 @@ Rails.application.routes.draw do
     resources :categories
     resources :faqs
     resources :reels
+    resources :payment_methods do
+      member { patch :toggle }
+    end
     resources :orders, only: [ :index, :show, :update ]
     resource :homepage_setting, only: [ :edit, :update ]
     resource :banner_setting, only: [ :edit, :update ]

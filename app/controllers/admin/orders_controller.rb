@@ -5,6 +5,7 @@ class Admin::OrdersController < Admin::BaseController
     @orders = Order.order(created_at: :desc).includes(:order_items)
     @orders = @orders.where(status: params[:status]) if params[:status].present?
     @orders = @orders.where(fulfillment_method: params[:fulfillment_method]) if params[:fulfillment_method].present?
+    @orders = @orders.where(payment_method: params[:payment_method]) if params[:payment_method].present?
     @orders = @orders.where(created_at: date_range) if date_range
 
     @stats = {

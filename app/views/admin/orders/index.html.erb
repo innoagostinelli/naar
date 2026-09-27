@@ -56,6 +56,15 @@
         </select>
       </div>
       <div class="col-6 col-md-3">
+        <label class="form-label">Pago</label>
+        <select name="payment_method" class="form-select form-select-sm">
+          <option value="">Todos</option>
+          <% Order.distinct.pluck(:payment_method).compact.each do |name| %>
+            <option value="<%= name %>" <%= "selected" if params[:payment_method] == name %>><%= name %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
         <label class="form-label">Estado</label>
         <select name="status" class="form-select form-select-sm">
           <option value="">Todos</option>
@@ -81,6 +90,7 @@
           <th>Fecha</th>
           <th>Cliente</th>
           <th>Entrega</th>
+          <th>Pago</th>
           <th>Ítems</th>
           <th>Total</th>
           <th>Estado</th>
@@ -101,6 +111,7 @@
             <td class="text-muted"><%= order.created_at.strftime("%d/%m/%Y %H:%M") %></td>
             <td class="text-muted"><%= order.customer_name %></td>
             <td class="text-muted"><%= order.delivery? ? "Delivery" : "Retiro" %></td>
+            <td class="text-muted"><%= order.payment_method.presence || "—" %></td>
             <td class="text-muted"><%= order.order_items.sum(:qty) %></td>
             <td>$<%= number_with_delimiter(order.total.to_i) %></td>
             <td>
@@ -120,7 +131,7 @@
         <% end %>
         <% if @orders.empty? %>
           <tr>
-            <td colspan="8" class="text-center text-muted py-4">No hay pedidos con estos filtros.</td>
+            <td colspan="9" class="text-center text-muted py-4">No hay pedidos con estos filtros.</td>
           </tr>
         <% end %>
       </tbody>

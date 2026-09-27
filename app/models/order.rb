@@ -28,6 +28,7 @@ class Order < ApplicationRecord
   validates :customer_phone, presence: true, on: :create
   validate :customer_phone_looks_like_a_number, on: :create
   validates :fulfillment_method, presence: true, on: :create
+  validates :payment_method, presence: true, on: :create
   validates :address, presence: true, if: :delivery?, on: :create
   validates :state, presence: true, if: :delivery?, on: :create
   validates :city, presence: true, if: :delivery?, on: :create

@@ -40,6 +40,10 @@ module ApplicationHelper
     }
   end
 
+  def enabled_payment_methods
+    PaymentMethod.enabled
+  end
+
   def locations_data
     # Un solo JOIN ordenado; state.cities.order(...) acá haría una query por estado.
     State.eager_load(:cities).order("states.name", "cities.name").map do |state|

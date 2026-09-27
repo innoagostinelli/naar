@@ -180,4 +180,11 @@ states_and_cities.each do |state_name, city_names|
 end
 
 puts "  #{State.count} estados y #{City.count} ciudades creados"
+
+# ── Métodos de pago ──────────────────────────────────────────────
+[ "Pago móvil", "Efectivo", "Paypal", "Zelle", "Binance" ].each_with_index do |name, i|
+  PaymentMethod.find_or_create_by!(name: name) { |p| p.position = i }
+end
+
+puts "  #{PaymentMethod.count} métodos de pago creados"
 puts "Seed completado ✓"

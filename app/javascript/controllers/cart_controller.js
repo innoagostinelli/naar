@@ -281,10 +281,12 @@ export default class extends Controller {
 
   persistCheckoutInfo() {
     const selected = this.formTarget.querySelector('input[name="fulfillment"]:checked')
+    const selectedPayment = this.formTarget.querySelector('input[name="payment_method"]:checked')
     localStorage.setItem(CHECKOUT_INFO_KEY, JSON.stringify({
       customerName: this.customerNameTarget.value,
       customerPhone: this.customerPhoneTarget.value,
       fulfillment: selected ? selected.value : null,
+      paymentMethod: selectedPayment ? selectedPayment.value : null,
       country: this.countryTarget.value,
       stateId: this.stateTarget.value || null,
       cityId: this.cityTarget.value || null,
@@ -296,8 +298,9 @@ export default class extends Controller {
   updateCheckoutSummaries() {
     const selected = this.formTarget.querySelector('input[name="fulfillment"]:checked')
     const fulfillmentLabel = selected ? (selected.value === "delivery" ? "Delivery" : "Retiro en tienda") : ""
+    const selectedPayment = this.formTarget.querySelector('input[name="payment_method"]:checked')
     this.customerSummaryTarget.textContent =
-      [ this.customerNameTarget.value, fulfillmentLabel ].filter(Boolean).join(" · ")
+      [ this.customerNameTarget.value, selectedPayment?.value, fulfillmentLabel ].filter(Boolean).join(" · ")
 
     const state = this.locations.find((s) => s.id === Number(this.stateTarget.value))
     const city = state?.cities.find((c) => c.id === Number(this.cityTarget.value))
@@ -334,6 +337,11 @@ export default class extends Controller {
       }
     }
 
+    if (info.paymentMethod) {
+      const radio = this.formTarget.querySelector(`input[name="payment_method"][value="${CSS.escape(info.paymentMethod)}"]`)
+      if (radio) radio.checked = true
+    }
+
     this.updateCheckoutSummaries()
   }
 
@@ -364,6 +372,7 @@ export default class extends Controller {
       customerName: this.customerNameTarget.value,
       customerPhone: this.fullPhone(),
       fulfillmentMethod: this.formTarget.querySelector('input[name="fulfillment"]:checked').value,
+      paymentMethod: this.formTarget.querySelector('input[name="payment_method"]:checked')?.value || "",
       country: this.countryTarget.value,
       stateId: this.stateTarget.value || null,
       cityId: this.cityTarget.value || null,
@@ -389,6 +398,7 @@ export default class extends Controller {
           customer_name: customer.customerName,
           customer_phone: customer.customerPhone,
           fulfillment_method: customer.fulfillmentMethod,
+          payment_method: customer.paymentMethod,
           country: customer.country,
           state_id: customer.stateId,
           city_id: customer.cityId,

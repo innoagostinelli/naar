@@ -27,6 +27,10 @@
         <div class="text-muted small">Entrega</div>
         <div class="fw-semibold"><%= @order.delivery? ? "Delivery" : "Retiro en tienda" %></div>
       </div>
+      <div class="col-auto">
+        <div class="text-muted small">Método de pago</div>
+        <div class="fw-semibold"><%= @order.payment_method.presence || "—" %></div>
+      </div>
       <% if @order.delivery? %>
         <div class="col-auto">
           <div class="text-muted small">Ubicación</div>

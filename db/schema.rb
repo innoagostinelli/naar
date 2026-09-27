@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_04_014916) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_27_221628) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -118,6 +118,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_04_014916) do
     t.string "customer_name"
     t.string "customer_phone"
     t.integer "fulfillment_method"
+    t.string "payment_method"
     t.integer "state_id"
     t.integer "status", default: 0, null: false
     t.string "token"
@@ -126,6 +127,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_04_014916) do
     t.index ["city_id"], name: "index_orders_on_city_id"
     t.index ["state_id"], name: "index_orders_on_state_id"
     t.index ["token"], name: "index_orders_on_token", unique: true
+  end
+
+  create_table "payment_methods", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "enabled", default: true, null: false
+    t.string "name", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "product_images", force: :cascade do |t|
