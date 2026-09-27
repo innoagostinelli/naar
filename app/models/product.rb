@@ -13,7 +13,7 @@ class Product < ApplicationRecord
   SIZE_ORDER    = (ALPHA_SIZES + NUMERIC_SIZES).freeze
 
   enum :flag,   { sin_flag: 0, nuevo: 1, oferta: 2, bestseller: 3 }
-  enum :status, { draft: 0, active: 1, archived: 2 }
+  enum :status, { draft: 0, active: 1, deleted: 2 }
 
   validates :name,     presence: true
   validates :price,    presence: true, numericality: { greater_than: 0 }
@@ -21,9 +21,10 @@ class Product < ApplicationRecord
 
   before_save :sync_flag_with_compare_at_price
 
-  scope :visible,   -> { where(status: :active).order(:position) }
-  scope :nuevos,    -> { active.where(flag: :nuevo) }
-  scope :en_oferta, -> { active.where(flag: :oferta) }
+  scope :visible,     -> { where(status: :active).order(:position) }
+  scope :nuevos,      -> { active.where(flag: :nuevo) }
+  scope :en_oferta,   -> { active.where(flag: :oferta) }
+  scope :not_deleted, -> { where.not(status: :deleted) }
 
   accent_insensitive_ransacker :name
 

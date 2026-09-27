@@ -191,7 +191,7 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   text-transform: uppercase;
   &.status-active   { background: #d1fae5; color: #065f46; }
   &.status-draft    { background: #fef3c7; color: #92400e; }
-  &.status-archived { background: #f3f4f6; color: #6b7280; }
+  &.status-deleted  { background: #f3f4f6; color: #6b7280; }
   &.badge-count-zero { background: #f3f4f6; color: #6b7280; }
 }
 

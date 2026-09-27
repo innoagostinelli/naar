@@ -1,17 +1,23 @@
 class Admin::ProductsController < Admin::BaseController
-  before_action :set_product, only: [ :edit, :update, :destroy ]
+  before_action :set_product, only: [ :edit, :update, :destroy, :restore ]
 
   def index
-    @q = Product.ransack(params[:q])
+    @q = Product.not_deleted.ransack(params[:q])
     scope = @q.result.includes(:category).order(:category_id, :position)
     @pagy, @products = pagy(scope)
 
     @stats = [
-      { value: Product.count,          label: "Total" },
-      { value: Product.active.count,   label: "Activos" },
-      { value: Product.nuevo.count,    label: "Nuevos" },
-      { value: Product.oferta.count,   label: "En oferta" },
+      { value: Product.not_deleted.count, label: "Total" },
+      { value: Product.active.count,      label: "Activos" },
+      { value: Product.nuevo.count,       label: "Nuevos" },
+      { value: Product.oferta.count,      label: "En oferta" },
     ]
+  end
+
+  def deleted
+    @q = Product.deleted.ransack(params[:q])
+    scope = @q.result.includes(:category).order(:category_id, :position)
+    @pagy, @products = pagy(scope)
   end
 
   def new
@@ -39,8 +45,13 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def destroy
-    @product.destroy
-    redirect_to admin_products_path, notice: "Producto eliminado."
+    @product.update(status: :deleted)
+    redirect_to admin_products_path, notice: "Producto eliminado. Podés restaurarlo desde Productos eliminados."
+  end
+
+  def restore
+    @product.update(status: :draft)
+    redirect_to deleted_admin_products_path, notice: "Producto restaurado a borrador."
   end
 
   private

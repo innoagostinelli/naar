@@ -15,7 +15,7 @@
   { attr: :flag_eq, type: :select, label: "Flag", col: 2,
     options: Product.flags.map { |k, v| [ k.humanize, v ] } },
   { attr: :status_eq, type: :select, label: "Estado", col: 2,
-    options: Product.statuses.map { |k, v| [ k.humanize, v ] } },
+    options: Product.statuses.except("deleted").map { |k, v| [ k.humanize, v ] } },
 ] %>
 
 <div class="card">
@@ -46,7 +46,7 @@
                 <%= link_to "Editar", edit_admin_product_path(product), class: "btn btn-sm btn-ghost" %>
                 <%= button_to "Eliminar", admin_product_path(product),
                       method: :delete,
-                      form: { data: { turbo_confirm: "¿Eliminar #{product.name}?" } },
+                      form: { data: { turbo_confirm: "¿Eliminar #{product.name}? Se puede restaurar después desde Productos eliminados." } },
                       class: "btn btn-sm btn-danger-ghost" %>
               </div>
             </td>

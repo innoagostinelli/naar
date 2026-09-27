@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
     root "dashboard#index"
     resources :products do
+      collection { get :deleted }
+      member { patch :restore }
       resources :variants, only: [ :create, :update, :destroy ],
                            controller: "product_variants"
       resources :images, only: [ :new, :create, :edit, :update, :destroy ],
