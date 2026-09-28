@@ -1,1 +1,9 @@
 # See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+#
+# /rails/ NO se bloquea: por ahí se sirven las fotos de productos (Google Imágenes).
+# /buscar tampoco: lleva meta noindex, y si se bloqueara Google no podría leerlo.
+User-agent: *
+Disallow: /admin
+Disallow: /products/
+
+Sitemap: https://naarbymanar.com/sitemap.xml

@@ -73,6 +73,10 @@ Rails.application.configure do
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "naarbymanar.com", protocol: "https" }
 
+  # Dominio canónico para SEO (canonical, og:url, sitemap, JSON-LD): siempre
+  # sin www, aunque el request llegue por www.naarbymanar.com.
+  config.x.site_url = "https://naarbymanar.com"
+
   # Outgoing email vía Resend (SMTP relay). API key en credentials (resend.api_key).
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {

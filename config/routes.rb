@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :orders, only: [ :create ]
   get "buscar", to: "search#index", as: :search
   get "products/:id/gallery", to: "products#gallery", as: :product_gallery
+  get "sitemap.xml", to: "sitemaps#show", as: :sitemap, defaults: { format: :xml }
 
   namespace :admin do
     get  "login",  to: "sessions#new",     as: :login

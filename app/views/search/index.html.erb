@@ -4,6 +4,8 @@
   <% end %>
 <% else %>
   <% content_for :title, @query.present? ? "Resultados para “#{@query}” — naar" : "Buscar — naar" %>
+  <%# Resultados de búsqueda: que Google siga los links pero no indexe la página. %>
+  <% content_for :robots, "noindex, follow" %>
   <section class="section shell search-results-page">
     <div class="section-head">
       <h1 class="section-title">
