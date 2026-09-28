@@ -9,6 +9,17 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_equal %w[image images imagesByColor], json.keys.sort
   end
 
+  test "gallery devuelve cada foto con su id y url" do
+    image = products(:remera).images.create!(position: 1)
+    image.image.attach(io: file_fixture("sample.jpg").open, filename: "sample.jpg", content_type: "image/jpeg")
+
+    get product_gallery_path(products(:remera))
+
+    slide = @response.parsed_body["images"].first
+    assert_equal image.id, slide["id"]
+    assert_match %r{/rails/active_storage/representations/}, slide["url"]
+  end
+
   test "gallery no expone productos en borrador" do
     get product_gallery_path(products(:body_borrador))
 

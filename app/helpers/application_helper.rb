@@ -21,18 +21,20 @@ module ApplicationHelper
     }
   end
 
+  # Cada foto va como { id:, url: } para que el modal pueda arrancar por la
+  # misma foto que se estaba viendo en la card (data-image-id).
   def product_gallery_data(product)
     image = product.images.first
-    image_url = ->(img) { url_for(img.image.variant(resize_to_limit: [ 1000, 1300 ])) }
+    slide = ->(img) { { id: img.id, url: url_for(img.image.variant(resize_to_limit: [ 1000, 1300 ])) } }
 
     images_by_color = product.swatches.each_with_object({}) do |s, h|
-      h[s[:name]] = product.images_for_color(s[:name]).select { |i| i.image.attached? }.map(&image_url)
+      h[s[:name]] = product.images_for_color(s[:name]).select { |i| i.image.attached? }.map(&slide)
     end
 
-    generic_images = product.images.select { |i| i.color_name.blank? && i.image.attached? }.map(&image_url)
+    generic_images = product.images.select { |i| i.color_name.blank? && i.image.attached? }.map(&slide)
 
     {
-      image: (image_url.call(image) if image&.image&.attached?),
+      image: (slide.call(image) if image&.image&.attached?),
       images: generic_images,
       imagesByColor: images_by_color
     }

@@ -20,16 +20,24 @@ export default class extends Controller {
     event.stopPropagation()
   }
 
+  // Al pasar el mouse / tocar la card: pedir la galería antes del click.
+  prefetch(event) {
+    this.fetchGallery(JSON.parse(event.currentTarget.dataset.product))
+  }
+
   open(event) {
     const card = event.currentTarget
     this.product = JSON.parse(card.dataset.product)
-    // Mientras llega la galería, mostrar la foto que ya se ve en la card.
-    const cardImage = card.querySelector("img")
-    this.product.image = cardImage ? (cardImage.currentSrc || cardImage.src) : null
+    // La foto que se está viendo en la card (el carrusel marca la activa):
+    // el modal arranca con ella y el color que muestra, hasta tener la galería.
+    const cardImage = card.querySelector("img.is-active") || card.querySelector("img")
+    this.coverId = cardImage ? Number(cardImage.dataset.imageId) : null
+    this.product.image = cardImage ? { id: this.coverId, url: cardImage.currentSrc || cardImage.src } : null
     this.qty = 1
     this.size = this.product.sizes.includes("M") ? "M" : (this.product.sizes[0] || null)
     const swatches = this.product.swatches || []
-    this.color = swatches.length ? swatches[0].name : null
+    const cardColor = cardImage?.dataset.imageColor
+    this.color = swatches.some((s) => s.name === cardColor) ? cardColor : (swatches.length ? swatches[0].name : null)
 
     this.qty = Math.min(this.qty, this.stockFor(this.size, this.color) ?? Infinity) || 1
 
@@ -65,23 +73,51 @@ export default class extends Controller {
     this.loadGallery(this.product)
   }
 
+  // Una sola request por producto, compartida entre prefetch y open.
+  fetchGallery(product) {
+    if (!this.galleries.has(product.id)) {
+      const request = fetch(product.galleryUrl, { headers: { Accept: "application/json" } })
+        .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
+      request.catch(() => this.galleries.delete(product.id)) // permitir reintentar
+      this.galleries.set(product.id, request)
+    }
+    return this.galleries.get(product.id)
+  }
+
   async loadGallery(product) {
-    let gallery = this.galleries.get(product.id)
-    if (!gallery) {
-      try {
-        const response = await fetch(product.galleryUrl, { headers: { Accept: "application/json" } })
-        if (!response.ok) return
-        gallery = await response.json()
-        this.galleries.set(product.id, gallery)
-      } catch {
-        return
-      }
+    let gallery
+    try {
+      gallery = await this.fetchGallery(product)
+    } catch {
+      return
     }
     // Si mientras tanto se abrió otro producto, no pisarlo.
     if (this.product !== product) return
 
-    Object.assign(product, gallery, { image: gallery.image || product.image })
+    product.images = gallery.images
+    product.imagesByColor = gallery.imagesByColor
+    product.image ||= gallery.image
+
+    // Dejar la foto de la card en pantalla hasta que la de la galería esté
+    // descargada y decodificada: así no hay cuadro vacío al cambiarla.
+    const shown = this.slides
+    const slides = this.buildSlides()
+    const first = slides[this.startIndex(slides)]
+    if (first) await this.preload(first.url)
+    if (this.product !== product || this.slides !== shown) return // se abrió otro producto o se cambió de color
+
     this.renderMedia()
+  }
+
+  preload(url) {
+    const img = new Image()
+    img.src = url
+    return img.decode().catch(() => {})
+  }
+
+  startIndex(slides) {
+    const i = slides.findIndex((s) => s.id === this.coverId)
+    return i === -1 ? 0 : i
   }
 
   close() {
@@ -92,7 +128,7 @@ export default class extends Controller {
 
   renderMedia() {
     this.slides = this.buildSlides()
-    this.slideIndex = 0
+    this.slideIndex = this.startIndex(this.slides)
     this.paintSlides()
   }
 
@@ -106,9 +142,9 @@ export default class extends Controller {
   paintSlides() {
     this.mediaTarget.innerHTML = ""
 
-    this.slides.forEach((src, i) => {
+    this.slides.forEach((slide, i) => {
       const img = document.createElement("img")
-      img.src = src
+      img.src = slide.url
       img.alt = this.product.name
       img.className = `media-carousel-slide ${i === this.slideIndex ? "is-active" : ""}`
       this.mediaTarget.appendChild(img)
@@ -275,7 +311,7 @@ export default class extends Controller {
         color: this.color,
         qty: this.qty,
         price: this.product.price,
-        image: this.slides[0] || this.product.image,
+        image: (this.slides[this.slideIndex] || this.product.image)?.url,
         stock: stock,
       })
     }

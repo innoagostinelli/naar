@@ -1,13 +1,14 @@
 <div class="product-card"
      role="button" tabindex="0"
-     data-action="click->product-modal#open keydown.enter->product-modal#open"
+     data-action="click->product-modal#open keydown.enter->product-modal#open mouseenter->product-modal#prefetch pointerdown->product-modal#prefetch"
      data-product="<%= product_modal_data(product).to_json %>">
   <% gallery = product.cover_gallery.select { |img| img.image.attached? } %>
   <div class="product-media" data-controller="card-carousel"
        data-action="mouseenter->card-carousel#start mouseleave->card-carousel#stop">
     <% gallery.each_with_index do |img, i| %>
       <%= image_tag img.image.variant(resize_to_fill: [ 600, 800 ]), alt: img.alt.presence || product.name,
-            class: "media-carousel-slide #{'is-active' if i.zero?}", data: { card_carousel_target: "slide" } %>
+            class: "media-carousel-slide #{'is-active' if i.zero?}",
+            data: { card_carousel_target: "slide", image_id: img.id, image_color: img.color_name } %>
     <% end %>
     <% if product.out_of_stock? %>
       <span class="product-flag flag-agotado">Agotado</span>
