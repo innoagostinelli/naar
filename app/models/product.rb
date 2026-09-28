@@ -25,6 +25,9 @@ class Product < ApplicationRecord
   scope :nuevos,      -> { active.where(flag: :nuevo) }
   scope :en_oferta,   -> { active.where(flag: :oferta) }
   scope :not_deleted, -> { where.not(status: :deleted) }
+  # Todo lo que usa shared/_product_card, precargado para evitar N+1
+  # (sin el attachment/blob, cada foto de la card dispara sus propias queries).
+  scope :with_card_data, -> { includes(:category, :variants, images: { image_attachment: :blob }) }
 
   accent_insensitive_ransacker :name
 
@@ -37,7 +40,8 @@ class Product < ApplicationRecord
   end
 
   def swatches
-    variants.select(:color_hex, :color_name).distinct.map { |v| { hex: v.color_hex, name: v.color_name } }
+    # En memoria (no .select/.distinct) para aprovechar las variantes precargadas.
+    variants.map { |v| { hex: v.color_hex, name: v.color_name } }.uniq
   end
 
   def sizes

@@ -13,6 +13,7 @@ export default class extends Controller {
     this.size = null
     this.color = null
     this.qty = 1
+    this.galleries = new Map()
   }
 
   stop(event) {
@@ -20,7 +21,11 @@ export default class extends Controller {
   }
 
   open(event) {
-    this.product = JSON.parse(event.currentTarget.dataset.product)
+    const card = event.currentTarget
+    this.product = JSON.parse(card.dataset.product)
+    // Mientras llega la galería, mostrar la foto que ya se ve en la card.
+    const cardImage = card.querySelector("img")
+    this.product.image = cardImage ? (cardImage.currentSrc || cardImage.src) : null
     this.qty = 1
     this.size = this.product.sizes.includes("M") ? "M" : (this.product.sizes[0] || null)
     const swatches = this.product.swatches || []
@@ -56,6 +61,27 @@ export default class extends Controller {
     this.modalTarget.classList.add("is-open")
     this.scrimTarget.classList.add("is-open")
     document.body.style.overflow = "hidden"
+
+    this.loadGallery(this.product)
+  }
+
+  async loadGallery(product) {
+    let gallery = this.galleries.get(product.id)
+    if (!gallery) {
+      try {
+        const response = await fetch(product.galleryUrl, { headers: { Accept: "application/json" } })
+        if (!response.ok) return
+        gallery = await response.json()
+        this.galleries.set(product.id, gallery)
+      } catch {
+        return
+      }
+    }
+    // Si mientras tanto se abrió otro producto, no pisarlo.
+    if (this.product !== product) return
+
+    Object.assign(product, gallery, { image: gallery.image || product.image })
+    this.renderMedia()
   }
 
   close() {

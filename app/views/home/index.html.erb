@@ -105,7 +105,7 @@
 <%# ── Catálogo por categoría ──────────────────────────────────── %>
 <% preview_count = 4 %>
 <% @categories.each do |cat| %>
-  <% items = cat.products.active.order(:position).includes(:images, :variants) %>
+  <% items = @products_by_category.fetch(cat.id, []) %>
   <% next if items.empty? %>
 
   <section class="section shell" id="cat-section-<%= cat.slug %>"

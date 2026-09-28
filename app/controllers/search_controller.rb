@@ -6,7 +6,7 @@ class SearchController < ApplicationController
 
     if @query.present?
       needle   = normalize(@query)
-      matches  = Product.visible.includes(:images, :variants, :category)
+      matches  = Product.visible.with_card_data
                          .select { |p| normalize(p.name).include?(needle) || normalize(p.description.to_s).include?(needle) }
       @total    = matches.size
       @products = turbo_frame_request? ? matches.first(PREVIEW_LIMIT) : matches
