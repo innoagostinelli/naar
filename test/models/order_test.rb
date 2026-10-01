@@ -6,6 +6,7 @@ class OrderTest < ActiveSupport::TestCase
       customer_name: "Cliente Test",
       customer_phone: "0414-1234567",
       fulfillment_method: :pickup,
+      payment_method: "Pago móvil",
       total: 0,
     }.merge(attrs))
   end
@@ -130,5 +131,19 @@ class OrderTest < ActiveSupport::TestCase
     order.update!(status: :pendiente_contacto)
 
     assert_equal 10, variant.reload.stock
+  end
+
+  test "rechaza un metodo de pago deshabilitado" do
+    order = build_order(payment_method: "Paypal")
+    assert_not order.valid?
+    assert order.errors.added?(:payment_method, "no está disponible, elige otro método de pago")
+  end
+
+  test "rechaza un metodo de pago que no existe" do
+    assert_not build_order(payment_method: "Bitcoin en efectivo").valid?
+  end
+
+  test "exige metodo de pago al crear" do
+    assert_not build_order(payment_method: nil).valid?
   end
 end

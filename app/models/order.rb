@@ -29,6 +29,7 @@ class Order < ApplicationRecord
   validate :customer_phone_looks_like_a_number, on: :create
   validates :fulfillment_method, presence: true, on: :create
   validates :payment_method, presence: true, on: :create
+  validate :payment_method_is_enabled, on: :create
   validates :address, presence: true, if: :delivery?, on: :create
   validates :state, presence: true, if: :delivery?, on: :create
   validates :city, presence: true, if: :delivery?, on: :create
@@ -64,6 +65,16 @@ class Order < ApplicationRecord
   end
 
   # El input es `type="tel"`, que no valida formato: dejaba pasar "asdasd".
+  # El checkout manda el nombre del método; tiene que ser uno habilitado hoy
+  # (evita pedidos con métodos deshabilitados o inventados desde fuera del form).
+  def payment_method_is_enabled
+    return if payment_method.blank?
+
+    unless PaymentMethod.enabled.exists?(name: payment_method)
+      errors.add(:payment_method, "no está disponible, elige otro método de pago")
+    end
+  end
+
   # Aceptamos dígitos y los separadores usuales (+ - ( ) . y espacios) y
   # exigimos entre 10 y 15 dígitos reales (móvil local venezolano = 11,
   # con código de país hasta ~13).

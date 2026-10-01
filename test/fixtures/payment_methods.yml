@@ -1,0 +1,14 @@
+pago_movil:
+  name: Pago móvil
+  enabled: true
+  position: 0
+
+zelle:
+  name: Zelle
+  enabled: true
+  position: 1
+
+paypal:
+  name: Paypal
+  enabled: false
+  position: 2

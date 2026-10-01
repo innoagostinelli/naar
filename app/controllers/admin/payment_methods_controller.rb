@@ -30,14 +30,20 @@ class Admin::PaymentMethodsController < Admin::BaseController
   end
 
   def destroy
-    @payment_method.destroy
-    redirect_to admin_payment_methods_path, notice: "Método de pago eliminado."
+    if @payment_method.destroy
+      redirect_to admin_payment_methods_path, notice: "Método de pago eliminado."
+    else
+      redirect_to admin_payment_methods_path, alert: @payment_method.errors.full_messages.to_sentence
+    end
   end
 
   def toggle
-    @payment_method.update(enabled: !@payment_method.enabled)
-    state = @payment_method.enabled? ? "habilitado" : "deshabilitado"
-    redirect_to admin_payment_methods_path, notice: "Método de pago #{state}."
+    if @payment_method.update(enabled: !@payment_method.enabled)
+      state = @payment_method.enabled? ? "habilitado" : "deshabilitado"
+      redirect_to admin_payment_methods_path, notice: "Método de pago #{state}."
+    else
+      redirect_to admin_payment_methods_path, alert: @payment_method.errors.full_messages.to_sentence
+    end
   end
 
   private
