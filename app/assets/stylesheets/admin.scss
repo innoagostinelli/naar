@@ -475,7 +475,7 @@ textarea.form-control { resize: vertical; min-height: 90px; }
     opacity: 1;
 
     .progress {
-      animation: thumb-preview-fill var(--delay, 3s) linear forwards;
+      animation: thumb-preview-fill var(--delay, 1.5s) linear forwards;
     }
   }
 }
@@ -484,8 +484,7 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   to { stroke-dashoffset: 0; }
 }
 
-// Solo en pantallas táctiles (en un tap no hay "sacar el puntero" que la cierre).
+// En táctil se abre con un toque (ver toggle en el controller).
 @media (hover: none) and (pointer: coarse) {
-  .thumb-preview,
-  .thumb-preview-loader { display: none; }
+  .admin-thumb[data-preview-url] { cursor: pointer; }
 }
