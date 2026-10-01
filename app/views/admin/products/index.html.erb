@@ -18,7 +18,7 @@
     options: Product.statuses.except("deleted").map { |k, v| [ k.humanize, v ] } },
 ] %>
 
-<div class="card">
+<div class="card" data-controller="thumb-preview">
   <div class="table-responsive">
     <table class="table table-vcenter table-hover card-table">
       <thead>

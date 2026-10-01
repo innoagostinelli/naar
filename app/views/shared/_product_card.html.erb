@@ -6,7 +6,7 @@
   <div class="product-media" data-controller="card-carousel"
        data-action="mouseenter->card-carousel#start mouseleave->card-carousel#stop">
     <% gallery.each_with_index do |img, i| %>
-      <%= image_tag img.image.variant(resize_to_fill: [ 600, 800 ]), alt: img.alt.presence || product.name,
+      <%= image_tag img.image.variant(:card), alt: img.alt.presence || product.name,
             class: "media-carousel-slide #{'is-active' if i.zero?}",
             data: { card_carousel_target: "slide", image_id: img.id, image_color: img.color_name } %>
     <% end %>

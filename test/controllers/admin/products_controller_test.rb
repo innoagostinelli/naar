@@ -34,6 +34,15 @@ class Admin::ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, first.image.blob.signed_id
   end
 
+  test "la miniatura lleva la URL de la vista previa grande pero no la descarga" do
+    attach_photo(Product.not_deleted.first)
+
+    get admin_products_path
+
+    assert_select "[data-controller=thumb-preview] img.admin-thumb[data-preview-url]", minimum: 1
+    assert_select "img[src*='600x800'], img.thumb-preview", 0
+  end
+
   test "producto sin fotos muestra el placeholder" do
     get admin_products_path
 

@@ -396,3 +396,96 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   justify-content: center;
   color: #b5b5b5;
 }
+
+// Vista previa al pasar el mouse por la miniatura (thumb_preview_controller.js)
+.admin-thumb[data-preview-url] {
+  cursor: zoom-in;
+}
+
+.thumb-preview {
+  position: fixed;
+  z-index: 1080;
+  width: 240px;
+  height: 320px;
+  padding: 6px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .18), 0 2px 6px rgba(0, 0, 0, .08);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(.92);
+  transform-origin: left var(--origin-y, 50%);
+  transition: opacity .15s ease, transform .15s ease;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    object-fit: cover;
+    background: #f1f1f1;
+    transition: opacity .15s ease;
+  }
+
+  &.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &.is-loading img {
+    opacity: 0;
+  }
+}
+
+// Anillo de espera junto al puntero; se llena en --delay (ver controller).
+.thumb-preview-loader {
+  position: fixed;
+  z-index: 1081;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .9);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .12s ease;
+
+  svg {
+    display: block;
+    transform: rotate(-90deg);
+  }
+
+  circle {
+    fill: none;
+    stroke-width: 3;
+  }
+
+  .track {
+    stroke: #eee;
+  }
+
+  .progress {
+    stroke: $burgundy;
+    stroke-linecap: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+
+  &.is-active {
+    opacity: 1;
+
+    .progress {
+      animation: thumb-preview-fill var(--delay, 3s) linear forwards;
+    }
+  }
+}
+
+@keyframes thumb-preview-fill {
+  to { stroke-dashoffset: 0; }
+}
+
+// Solo en pantallas táctiles (en un tap no hay "sacar el puntero" que la cierre).
+@media (hover: none) and (pointer: coarse) {
+  .thumb-preview,
+  .thumb-preview-loader { display: none; }
+}

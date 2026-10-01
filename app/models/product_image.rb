@@ -7,6 +7,9 @@ class ProductImage < ApplicationRecord
   # subir la foto, para que el listado del admin no tenga que procesarla.
   has_one_attached :image do |attachable|
     attachable.variant :thumb, resize_to_fill: [ 112, 112 ], preprocessed: true
+    # Misma transformación que la card de la tienda (ya generada para casi todas);
+    # el admin la usa para la vista previa al pasar el mouse por la miniatura.
+    attachable.variant :card, resize_to_fill: [ 600, 800 ]
   end
 
   validates_attachment :image,
