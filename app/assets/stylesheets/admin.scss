@@ -373,9 +373,16 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   }
 }
 
-// Miniatura del listado de productos
+// Miniatura del listado de productos. Ojo: no usar `w-1` en la columna (en
+// Tabler es width: .25rem, no "mínimo") — con max-width: 100% la imagen
+// quedaba en 0px de ancho.
+.admin-thumb-col {
+  width: 64px;
+}
+
 .admin-thumb {
   display: block;
+  max-width: none;
   width: 40px;
   height: 40px;
   border-radius: 6px;
