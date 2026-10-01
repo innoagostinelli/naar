@@ -46,7 +46,7 @@ class Admin::ProductsController < Admin::BaseController
 
   def destroy
     @product.update(status: :deleted)
-    redirect_to admin_products_path, notice: "Producto eliminado. Podés restaurarlo desde Productos eliminados."
+    redirect_to admin_products_path, notice: "Producto eliminado. Puedes restaurarlo desde Productos eliminados."
   end
 
   def restore
