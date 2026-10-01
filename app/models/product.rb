@@ -27,6 +27,9 @@ class Product < ApplicationRecord
   scope :not_deleted, -> { where.not(status: :deleted) }
   # Todo lo que usa shared/_product_card, precargado para evitar N+1
   # (sin el attachment/blob, cada foto de la card dispara sus propias queries).
+  # Precarga imágenes + blobs + variantes ya generadas: el listado del admin
+  # arma la URL directa de cada miniatura sin consultas extra por fila.
+  scope :with_thumbnail, -> { includes(images: { image_attachment: { blob: { variant_records: { image_attachment: :blob } } } }) }
   scope :with_card_data, -> { includes(:category, :variants, images: { image_attachment: :blob }) }
 
   accent_insensitive_ransacker :name
@@ -58,6 +61,11 @@ class Product < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     []
+  end
+
+  # Primera foto (por posición) con archivo; usa la asociación precargada.
+  def thumbnail_image
+    images.find { |i| i.image.attached? }
   end
 
   def images_for_color(color_name)

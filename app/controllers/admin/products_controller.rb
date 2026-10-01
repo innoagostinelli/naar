@@ -3,7 +3,7 @@ class Admin::ProductsController < Admin::BaseController
 
   def index
     @q = Product.not_deleted.ransack(params[:q])
-    scope = @q.result.includes(:category).order(:category_id, :position)
+    scope = @q.result.includes(:category).with_thumbnail.order(:category_id, :position)
     @pagy, @products = pagy(scope)
 
     @stats = [
@@ -16,7 +16,7 @@ class Admin::ProductsController < Admin::BaseController
 
   def deleted
     @q = Product.deleted.ransack(params[:q])
-    scope = @q.result.includes(:category).order(:category_id, :position)
+    scope = @q.result.includes(:category).with_thumbnail.order(:category_id, :position)
     @pagy, @products = pagy(scope)
   end
 

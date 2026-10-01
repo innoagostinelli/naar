@@ -372,3 +372,20 @@ textarea.form-control { resize: vertical; min-height: 90px; }
     margin-bottom: 16px;
   }
 }
+
+// Miniatura del listado de productos
+.admin-thumb {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: #f1f1f1;
+}
+
+.admin-thumb-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b5b5b5;
+}

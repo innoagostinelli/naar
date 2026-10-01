@@ -1,5 +1,8 @@
 class Admin::BaseController < ApplicationController
   include Pagy::Backend
+  # Fija ActiveStorage::Current.url_options para poder pedir URLs directas de
+  # archivos (ej. miniaturas ya procesadas) también con el servicio Disk de dev.
+  include ActiveStorage::SetCurrent
 
   before_action :require_admin
   layout "admin"
@@ -19,6 +22,6 @@ class Admin::BaseController < ApplicationController
     return if admin_signed_in?
 
     session[:admin_return_to] = request.fullpath if request.get?
-    redirect_to admin_login_path, alert: "Iniciá sesión para continuar."
+    redirect_to admin_login_path, alert: "Inicia sesión para continuar."
   end
 end

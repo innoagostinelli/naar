@@ -78,7 +78,7 @@
             <tr>
               <td>
                 <% if img.image.attached? %>
-                  <%= image_tag img.image.variant(resize_to_fill: [ 112, 112 ]), style: "width:56px; height:56px; object-fit:cover; border-radius:6px;" %>
+                  <%= image_tag img.image.variant(:thumb), style: "width:56px; height:56px; object-fit:cover; border-radius:6px;" %>
                 <% else %>
                   <span class="text-muted">Sin archivo</span>
                 <% end %>
