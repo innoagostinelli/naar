@@ -300,7 +300,7 @@ export default class extends Controller {
     const fulfillmentLabel = selected ? (selected.value === "delivery" ? "Delivery" : "Retiro en tienda") : ""
     const selectedPayment = this.formTarget.querySelector('input[name="payment_method"]:checked')
     this.customerSummaryTarget.textContent =
-      [ this.customerNameTarget.value, selectedPayment?.value, fulfillmentLabel ].filter(Boolean).join(" · ")
+      [ this.customerNameTarget.value, fulfillmentLabel, selectedPayment?.value ].filter(Boolean).join(" · ")
 
     const state = this.locations.find((s) => s.id === Number(this.stateTarget.value))
     const city = state?.cities.find((c) => c.id === Number(this.cityTarget.value))

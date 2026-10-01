@@ -58,19 +58,6 @@
           </label>
 
           <div class="checkout-field">
-            <span>Método de pago</span>
-            <div class="fulfillment-row">
-              <% enabled_payment_methods.each do |method| %>
-                <label class="size-pill fulfillment-pill">
-                  <input type="radio" name="payment_method" value="<%= method.name %>"
-                         data-action="change->cart#persistCheckoutInfo" required>
-                  <%= method.name %>
-                </label>
-              <% end %>
-            </div>
-          </div>
-
-          <div class="checkout-field">
             <span>Entrega</span>
             <div class="fulfillment-row">
               <label class="size-pill fulfillment-pill">
@@ -81,6 +68,19 @@
                 <input type="radio" name="fulfillment" value="pickup" data-action="change->cart#toggleFulfillment" required>
                 Retiro en tienda
               </label>
+            </div>
+          </div>
+
+          <div class="checkout-field">
+            <span>Método de pago</span>
+            <div class="fulfillment-row">
+              <% enabled_payment_methods.each do |method| %>
+                <label class="size-pill fulfillment-pill">
+                  <input type="radio" name="payment_method" value="<%= method.name %>"
+                         data-action="change->cart#persistCheckoutInfo" required>
+                  <%= method.name %>
+                </label>
+              <% end %>
             </div>
           </div>
         </div>
