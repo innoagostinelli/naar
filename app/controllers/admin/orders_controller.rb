@@ -2,18 +2,21 @@ class Admin::OrdersController < Admin::BaseController
   before_action :set_order, only: [ :show, :update ]
 
   def index
-    @orders = Order.order(created_at: :desc).includes(:order_items)
+    @orders = Order.order(created_at: :desc)
     @orders = @orders.where(status: params[:status]) if params[:status].present?
     @orders = @orders.where(fulfillment_method: params[:fulfillment_method]) if params[:fulfillment_method].present?
     @orders = @orders.where(payment_method: params[:payment_method]) if params[:payment_method].present?
     @orders = @orders.where(created_at: date_range) if date_range
 
+    # Las estadísticas se calculan antes de agregar includes(:order_items):
+    # un sum con includes hace JOIN y duplica el total por cada ítem de la orden.
     @stats = {
       total_orders:       @orders.count,
       total_sales:        @orders.pagada.sum(:total),
       pendiente_contacto: @orders.pendiente_contacto.count,
       espera_pago:        @orders.espera_pago.count,
     }
+    @orders = @orders.includes(:order_items)
     @orders_with_stock_conflict = @orders.select(&:stock_conflict?).size
   end
 

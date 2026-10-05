@@ -39,4 +39,16 @@ class Admin::OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_equal "anulada", order.reload.status
     assert_match "Estado del pedido actualizado", flash[:notice]
   end
+
+  test "ventas pagadas suma el total una sola vez aunque la orden tenga varios items" do
+    order = orders(:pagada_order)
+    2.times do |i|
+      order.order_items.create!(name: "Item #{i}", size: "M", color: "Negro", qty: 1, price: 50)
+    end
+
+    get admin_orders_path
+
+    assert_response :success
+    assert_select ".stat-num", text: "$100"
+  end
 end
